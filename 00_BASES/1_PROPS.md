@@ -10,12 +10,41 @@
 ## Nouvelles notions
 - React.Component
 - fonction composant
+- super(props)
 
 Les fonctions composants capturent les valeurs du rendu  
 Les classes ont une fonction render()  
 
 
 ## Codes a tester
+
+
+### Super
+```
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    console.log(this.props)
+  }
+  render() {
+    console.log(this.props)
+  }
+}
+
+//VS
+
+class App extends React.Component {
+  constructor(props){
+    super();
+    console.log(this.props)
+  }
+  render() {
+    console.log(this.props)
+  }
+}
+
+```
+
 
 ### Lecture seule
 ```
