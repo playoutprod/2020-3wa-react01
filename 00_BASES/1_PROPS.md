@@ -11,8 +11,8 @@
 - React.Component
 - fonction composant
 
-Les fonctions composants capturent les valeurs du rendu
-Les props des fonctions composants ne peuvent pas changer au cours du temps dans la fonction
+Les fonctions composants capturent les valeurs du rendu  
+Les classes ont une fonction render()  
 
 
 ## Codes a tester
@@ -41,7 +41,14 @@ ReactDOM.render(
 
 [source](https://overreacted.io/fr/how-are-function-components-different-from-classes/)
 
-Le principe est de tester une action en modifiant les props avant l'éxécution
+Le principe est de tester une action en modifiant les props avant l'effet  
+On simule le scénario suivant :
+
+1. On affiche le profil d'un utilisateur
+2. On clique sur le bouton suivre
+3. Le composant doit exécuter des événements asynchrones avant de suivre réellement
+4. Pendant ce laps de temps, on change de profil
+
 - Cliquer sur follow, changer le nom, analyser le résultat.
 
 ```
