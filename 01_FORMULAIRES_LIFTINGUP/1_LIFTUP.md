@@ -9,7 +9,7 @@
 ## Nouvelles notions
 
 
-![model](images/LIFTUP STATE.jpg)
+![model](images/LIFTUP_STATE.jpg)
 
 ## Codes a tester
 ```
