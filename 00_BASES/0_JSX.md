@@ -16,7 +16,7 @@
 
 ## Codes a tester
 
-### XSS that does not work
+### Attaque XSS échapée
 ```
 const title = "<img onerror='alert(\"Hacked!\")' src='invalid-image' />";
 class Xss extends React.Component {
@@ -29,7 +29,7 @@ class Xss extends React.Component {
 ReactDOM.render(<Xss/>,document.getElementById('root'));
 ```
 
-### XSS that work
+### Attaque XSS non échapée
 ```
 const hack = "javascript:alert('Hacked!');";
 class Xss extends React.Component {
