@@ -1,4 +1,4 @@
-# LIFE CYCLE
+# ASYNC STATE & PROPS
 
 ## Notions nécessaires
 

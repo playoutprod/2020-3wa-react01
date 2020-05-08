@@ -1,4 +1,4 @@
-# LIFE CYCLE
+# EVENTS
 
 ## Notions nécessaires
 - onClick
