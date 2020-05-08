@@ -52,7 +52,7 @@ class Button extends React.Component{
   constructor(props){
     super(props);
     // lié la méthode au this de la classe
-    this.click = this.click.bind(this);
+    // this.click = this.click.bind(this);
   }
   // arrow function
   click = (event) => {
