@@ -17,4 +17,5 @@ Install npm : [Download link](https://nodejs.org/en/download/)
 
 ```
 npm install create-react-app --global
+npx create-react-app my-app --use-npm
 ```
