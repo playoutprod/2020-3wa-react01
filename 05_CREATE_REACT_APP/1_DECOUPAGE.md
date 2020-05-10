@@ -9,6 +9,8 @@
 - [webpack](https://webpack.js.org/)
 - [babel](https://babeljs.io/)
 
+### import vs require
+![result](images/import_require.jpg)
 
 ## Codes a tester
 
