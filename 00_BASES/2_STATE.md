@@ -11,6 +11,8 @@
 - Une vue (View) contient la présentation de l'interface graphique.
 - Un contrôleur (Controller) contient la logique concernant les actions effectuées par l'utilisateur.
 
+L MVC permet d'éviter les effets de bord.
+
 ![model](images/mvc.jpg)
 
 ## Codes a tester
