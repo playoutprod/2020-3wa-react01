@@ -6,6 +6,8 @@
 ## Nouvelles notions
 - Router
 - Switch
+- Route
+- Link
 
 
 ## Codes a tester

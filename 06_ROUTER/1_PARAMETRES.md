@@ -3,8 +3,7 @@
 ## Notions nécessaires
 
 ## Nouvelles notions
-- url
-- path
+- useParams
 
 ## Codes a tester
 
