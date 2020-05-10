@@ -1,4 +1,4 @@
-# GESTIOND DES STYLES
+# GESTION DES STYLES
 
 ## Notions nécessaires
 - CSS
