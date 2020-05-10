@@ -1,4 +1,4 @@
-# GESTIOND DES STYLES
+# CREATE REACT APP
 
 ## Notions nécessaires
 - terminal
