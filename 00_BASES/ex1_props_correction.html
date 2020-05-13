@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+    const MESSAGES = [
+        { message : "React JS" },
+        { message : "React Native" },
+        { message : "Angular" },
+        { message : "Symfony" },
+        { message : "MongoDB" },
+    ];
+
+    class App extends React.Component{
+    
+    	render(){
+        	return (
+                <div>
+                    <Messages messages={MESSAGES} />
+                </div>
+            );
+        }
+    }
+
+    class Messages extends React.Component{
+
+        render(){
+            return (
+                <div>
+                    { /* 
+                    La clé est nécessaire à React pour identifier les éléments 
+                    dans le DOM, si vous l'oubliez vous aurez un message de Warning
+                    */}
+                    {this.props.messages.map((m, i) => <Message key={i} message={m.message} />)}
+                </div>
+            );
+        }
+    }
+    
+    class Message extends React.Component{
+    
+        render(){
+            return (
+                <p>{this.props.message}</p>
+            );
+        }
+    }
+    
+    const container = document.getElementById('root');
+    
+    ReactDOM.render(
+    	<App />,
+        container
+    );
+    </script>
+</body>
+</html>
