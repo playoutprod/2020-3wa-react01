@@ -1,0 +1,34 @@
+
+{
+  "path" : "",
+  "extension" : "jpg",
+  "full_folder" : "full",
+  "thumb_folder" : "thumbnails",
+  "thumb_prefix" : "t-",
+  "images" : [
+    {
+      "id" : 0,
+      "name" : "photo-1545381550-40a2ebad6135",
+    },
+    {
+      "id" : 1,
+      "name" : "photo-1553481187-be93c21490a9"
+    },
+    {
+      "id" : 2,
+      "name" : "photo-1472457897821-70d3819a0e24"
+    },
+    {
+      "id" : 3,
+      "name" : "photo-1504177847824-d075f5706770"
+    },
+    {
+      "id" : 4,
+      "name" : "photo-1511882150382-421056c89033"
+    },
+    {
+      "id" : 5,
+      "name" : "photo-1534595461757-4974c5072dff"
+    }
+  ]
+}
