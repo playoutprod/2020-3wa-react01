@@ -11,8 +11,12 @@
 
 ![model 1](images/LIFTUP_STATE.jpg)
 
+
+
 ![model 2](images/inter_component.jpg)
 
+
+  
 ## Codes a tester
 ```
 class Parent extends React.Component{
