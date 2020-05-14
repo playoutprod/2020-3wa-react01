@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+
+      function loadJSON(url,callback) {
+
+        var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+        xobj.open('GET', 'my_data.json', true); // Replace 'my_data' with the path to your file
+        xobj.onreadystatechange = function () {
+              if (xobj.readyState == 4 && xobj.status == "200") {
+                // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+                callback(xobj.responseText);
+              }
+        };
+        xobj.send(null);
+      }
+
+      // http://localhost:8080
+   fetch('https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json')
+   .then(response => {
+
+       if (!response.ok) {
+           throw new Error("HTTP error " + response.status);
+       }
+       return response.json();
+   })
+   .then(json => {
+     console.log(json)
+       this.users = json;
+       //console.log(this.users);
+   })
+   .catch(function (error) {
+       console.log(error)
+   })
+
+
+
+
+
+
+
+      class App extends React.Component{
+
+        constructor(props){
+          super(props);
+          loadJSON("https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json",this.onDataLoaded)
+        }
+
+        onDataLoaded(data){
+          console.log(data)
+        }
+
+        render(){
+          return(
+          <div></div>
+          )
+        }
+      }
+
+
+     ReactDOM.render(
+         <App/>,
+         document.getElementById("root")
+     );
+
+    </script>
+  </body>
+</html>
