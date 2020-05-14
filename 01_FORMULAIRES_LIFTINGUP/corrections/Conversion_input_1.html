@@ -16,18 +16,35 @@
       constructor(props){
         super(props);
         this.state = {
-          valeur : this.props.valeur
+          valeur : 0
         }
-        this.props.changeFct("text");
       }
 
       handleChange = (event) =>{
+        const value = (event.target.value === '' || isNan(event.target.value)) ? 0 : parseFloat(event.target.value)
+        this.setState({
+          valeur : value
+        });
+
+        this.props.changeFct(value,this.props.type);
 
       }
-      
+
+      to_decimal = (valeur) => {
+        return(valeur)
+      }
+
+      to_binary = (valeur) => {
+        return((valeur-0).toString(2))
+      }
+
       render(){
         return(
+          <p>
+          <span>{this.props.type} : {this['to_'+[this.props.type]](this.props.valeur)}</span><br/>
           <input type="text" value={this.state.valeur} onChange={this.handleChange}/>
+
+          </p>
         )
       }
     }
@@ -40,15 +57,17 @@
         }
       }
 
-      onChange = (text) => {
-        console.log(text)
+      onChange = (valeurEnfant) => {
+        this.setState({
+          valeur : valeurEnfant
+        })
       }
 
       render(){
         return(
           <div>
-            <BaseNumberInput valeur={this.state.valeur} changeFct={this.onChange}/>
-            <BaseNumberInput valeur={this.state.valeur} changeFct={this.onChange}/>
+            <BaseNumberInput type="decimal" valeur={this.state.valeur} changeFct={this.onChange}/>
+            <BaseNumberInput type="binary" valeur={this.state.valeur} changeFct={this.onChange}/>
           </div>
         )
       }
