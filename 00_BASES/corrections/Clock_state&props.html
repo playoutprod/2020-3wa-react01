@@ -12,12 +12,12 @@
     <!-- compilation JSX => JS -->
     <script type="text/babel">
 
-    class Time extends React.Component{
 
+    //Composant qui affiche le résultat
+    class Time extends React.Component{
       render(){
         return(<p>{this.props.value}</p>)
       }
-
     }
 
     class Clock extends React.Component{
@@ -25,10 +25,12 @@
       constructor(props){
         super(props);
 
+        //Etat initial du state
         this.state = {
           time:(new Date).toLocaleTimeString()
         }
 
+        //Boucle de mise à jour
         setInterval(()=>{
           this.setState(
             {
@@ -39,13 +41,17 @@
 
       }
 
+      //Le rendu est appelé : au montage de l'éméent, puis dans chaque interval
       render(){
         return(
+          //Si la valeur du state change, alors le composant est mis à jour
           <Time value={this.state.time}/>
         )
       }
+
     }
 
+    //Le composant clock est rendu dans le DOM
     ReactDOM.render(
     <Clock/>,
     document.getElementById('root')
