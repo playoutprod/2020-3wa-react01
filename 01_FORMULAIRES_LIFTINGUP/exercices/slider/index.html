@@ -7,6 +7,12 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/a1c23f1860dd389e0f100c213be74027e2b1b22d/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
+    <style>
+
+      .view{
+        overflow:scroll;
+      }
+    </style>
   </head>
   <body>
     <div id="slider"></div>
@@ -31,7 +37,7 @@
               this.props.data &&
                 this.props.data.images.map((image,k)=>{return(
                   <li key={k}>
-                    <img loaded={image.loaded ? 1:0} width="400" height="320" src={this.composeUrl(image.name,this.props.size)}/>
+                    <img loaded={image.loaded ? 1:0} width={this.props.size === "full" ? 400 : 80} height={this.props.size === "full" ? 320 : 80} src={this.composeUrl(image.name,this.props.size)}/>
                   </li>
                 )})
               }
