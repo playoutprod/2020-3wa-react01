@@ -13,7 +13,6 @@
     <!-- compilation JSX => JS -->
     <script type="text/babel">
 
-
       function loadJSON(url,callback) {
         fetch('https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json')
         .then(response => {
@@ -49,7 +48,7 @@
         render(){
           return(
           <div id="slider">
-            <div id="loader-1"></div>
+            <div id="loader-1" className="loader"></div>
 
           </div>
           )
