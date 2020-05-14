@@ -7,27 +7,6 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://raw.githack.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
-    <style type="text/css">
-      html,body{
-        margin:0;
-        width:100%;
-        height:100%;
-      }
-      #slider,.layer{
-        position:absolute;
-        width:100%;
-        height:100%;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        opacity:1;
-        transition : opacity 2s ease-out;
-        background-color:#FFF;
-      }
-      .layer.hide{
-        opacity:0;
-      }
-    </style>
   </head>
   <body>
     <div id="slider"></div>
@@ -40,13 +19,12 @@
           super(props);
           this.data = null;
           this.state = {
-            dataLoaded : false
+            dataLoaded : false,
+            imagesLoaded : false
           }
-          this.loadData("https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json",this.onDataLoaded)
         }
-
         loadData(url,callback) {
-          fetch('https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json')
+          fetch(url)
           .then(response => {
               if (!response.ok) {
                   throw new Error("HTTP error " + response.status);
@@ -57,36 +35,57 @@
              callback(json);
           })
         }
-
         onDataLoaded = (data) => {
           this.data = data;
+          this.data.images.forEach( (image) => {
+            image.loaded=false;
+            const img = new Image();
+            img.src = `${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`;
+            img.onload = () => {
+
+                image.loaded=true;
+                this.checkLoad();
+            };
+          })
           this.setState({
             dataLoaded : true
           })
         }
+        checkLoad = () => {
+          if(!this.data.images.find(image => image.loaded === false)){
+            this.setState({
+              imagesLoaded : true
+            })
+          }
+        }
 
         render(){
-
           return(
           <React.Fragment>
-            <div className={"layer"+(this.state.dataLoaded ? " hide" : "")}>
+
+            <div className={"layer"+(this.state.imagesLoaded ? " hide" : "")}>
                 <div id="loader-1" className="loader"></div>
             </div>
-            <div className="layer">
-              <ul>
-                {this.data &&
-                  this.data.images.map((image,k)=>(
-                    <li key={k}><img src={`${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}`}/></li>
-                  ))
-                }
-              </ul>
+
+            <div className="layer content">
+              <div className="view">
+                <ul className="full">
+                  {this.data &&
+                    this.data.images.map((image,k)=>{return(
+                      <li key={k}><img loaded={image.loaded ? 1:0} width="400" height="320" src={`${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`}/></li>
+                    )})
+                  }
+                </ul>
+              </div>
             </div>
 
           </React.Fragment>
           )
         }
+        componentDidMount(){
+          this.loadData("https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json",this.onDataLoaded)
+        }
       }
-
 
      ReactDOM.render(
          <Slider/>,
