@@ -9,8 +9,17 @@
     <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/a1c23f1860dd389e0f100c213be74027e2b1b22d/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
     <style>
 
-      .view{
+      .view,.controls{
         overflow:scroll;
+      }
+      .view{
+        flex:2;
+      }
+      .controls{
+        flex:1;
+      }
+      li{
+        list-style:none;
       }
     </style>
   </head>
@@ -32,7 +41,7 @@
 
         render(){
           return(
-            <ul className={this.props.size}>
+            <ul className={"imagelist "+this.props.size}>
               {
               this.props.data &&
                 this.props.data.images.map((image,k)=>{return(
@@ -59,7 +68,7 @@
       class Controls extends React.Component{
         render(){
           return(
-          <div className="view">
+          <div className="controls">
             <Imagelist data={this.props.data} size="thumb"/>
           </div>
           )
@@ -95,8 +104,10 @@
             img.src = `${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`;
             img.onload = () => {
                 image.loaded=true;
+                image.originalSize = [img.width,img.height];
                 this.checkLoad();
             };
+
           })
           this.setState({
             dataLoaded : true
