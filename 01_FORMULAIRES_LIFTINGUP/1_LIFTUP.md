@@ -9,7 +9,9 @@
 ## Nouvelles notions
 
 
-![model](images/LIFTUP_STATE.jpg)
+![model 1](images/LIFTUP_STATE.jpg)
+
+![model 2](images/inter_component.jpg)
 
 ## Codes a tester
 ```
