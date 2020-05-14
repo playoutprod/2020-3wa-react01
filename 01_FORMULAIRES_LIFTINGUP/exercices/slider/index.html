@@ -6,7 +6,7 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="source/page.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="https://raw.githack.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/style.css" media="all"/>
   </head>
   <body>
     <div id="root"></div>
@@ -39,7 +39,7 @@
           loadJSON("https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json",this.onDataLoaded)
         }
 
-        onDataLoaded(data){
+        onDataLoaded = (data) => {
           this.data = data;
           this.setState({
             dataLoaded : true
@@ -49,7 +49,8 @@
         render(){
           return(
           <div id="slider">
-            {!this.state.dataLoaded && <div id="loader-1"></div>}
+            <div id="loader-1"></div>
+
           </div>
           )
         }

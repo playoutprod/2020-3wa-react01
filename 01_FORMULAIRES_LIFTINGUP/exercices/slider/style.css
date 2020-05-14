@@ -1,6 +1,14 @@
 
 /* LOADER 1 */
 
+.loader{
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+
 #loader-1:before, #loader-1:after{
   content: "";
   position: absolute;
