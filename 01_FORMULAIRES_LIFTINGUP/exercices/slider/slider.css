@@ -82,6 +82,7 @@ html,body{
   display:flex;
   flex-direction:column;
   justify-content:flex-start;
+  align-items: center;
   width:100%;
   height:100%;
 }
@@ -95,8 +96,24 @@ li{
 .etape2 .view,.controls{
   overflow:hidden;
 }
+
+ul{
+  margin:0;
+  padding:0;
+}
+.etape2 .imagelist li {
+  display:inline-block;
+}
+.etape2#slider{
+  overflow:hidden;
+}
+.etape2 .view .container{
+  width:400px;
+  overflow: hidden;
+}
 .view{
   flex:2;
+
 }
 .controls{
   flex:1;

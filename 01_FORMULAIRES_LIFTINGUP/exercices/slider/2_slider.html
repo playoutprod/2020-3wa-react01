@@ -8,13 +8,7 @@
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://raw.githack.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
     <style>
-      .etape2 .imagelist li {
-        display:inline-block;
-      }
-      .etape2#slider{
-        overflow:hidden;
-      }
-
+      
     </style>
   </head>
   <body>
@@ -76,7 +70,9 @@
           return(
             <div className="view">
               <Arrows handleClick={this.handleClick}/>
-              <Imagelist data={this.props.data} size="full"/>
+              <div className="container">
+                <Imagelist data={this.props.data} size="full"/>
+              </div>
             </div>
           )
         }
@@ -164,11 +160,13 @@
             preloaded : true
           })
         }
+
         handleSlide = (slideLeft) => {
           this.setState((previousState,props) => {
             return({current : slideLeft ? (previousState.current > 0 ? previousState.current-1 : 0) : (previousState.current < this.data.images.length-1 ? previousState.current+1 : 0)})
           })
         }
+
         render(){
           return(
           <React.Fragment>

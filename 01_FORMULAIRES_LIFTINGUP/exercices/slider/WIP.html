@@ -37,7 +37,6 @@
             this.state={
                 dataLoaded : false,
                 imagesLoaded : false
-
             }
         }
 
@@ -50,7 +49,7 @@
               image.loaded=false;
                 const img=new Image();
                 img.src =`${this.data.path}${this.data.full_folder}/${image.name}.${data.extension}?raw=true`;
-                img.onload=()=>{
+                img.onload = ()=>{
                     image.loaded=true;
                     this.checkImagesLoad();
                 }
@@ -59,8 +58,9 @@
         }
 
         checkImagesLoad = () => {
-          if(!this.data.images.find(image=>image.loaded===false)){
+          if(!this.data.images.find(image=>image.loaded === false)){
               this.setState({imagesLoaded : true});
+
               //sendToParent(this.data);
           }
         }
