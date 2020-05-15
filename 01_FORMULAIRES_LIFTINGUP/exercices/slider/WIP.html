@@ -7,14 +7,14 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
     <link rel="stylesheet" type="text/css"
-          href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/bfcb23f84289a7a542be6beef6091b4a1998d840/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css"
+          href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/4a500585580f0897e0e95cda1f52280c243cc493/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css"
           media="all"/>
     <style>
 
     </style>
 </head>
 <body>
-<div id="slider"></div>
+<div id="slider" className="etape2"></div>
 <!-- compilation JSX => JS -->
 
 <script type="text/babel">
@@ -74,7 +74,12 @@
     }
 
     class ImageList extends React.Component {
-
+        constructor(props){
+            super(props);
+            this.state={
+                size : this.props.size === "full" ? [400, 320] : [80, 80]
+            }
+        }
         render() {
 
             let jsx = (<ul className="imagelist"></ul>);
@@ -86,7 +91,7 @@
                             return (
                                 <li key={k}>
                                     <img
-                                        src={`${this.props.data.path}${this.props.data.full_folder}/${image.name}.${this.props.data.extension}?raw=true`}/>
+                                        src={`${this.props.data.path}${this.props.data[this.props.size+'_folder']}/${image.name}.${this.props.data.extension}?raw=true`}/>
                                 </li>
                             )
                         })
@@ -100,12 +105,29 @@
         }
     }
 
+    class Arrows extends React.Component {
+
+        render() {
+            return(
+                <div className="arrows">
+                    <button className="arrow left" onClick={this.props.handleClick}></button>
+                    <button className="arrow right" onClick={this.props.handleClick}></button>
+                </div>
+            )
+        }
+    }
+
     class View extends React.Component {
+
+        onClick = () => {
+
+        }
 
         render() {
             return (
                 <div className="view">
-                    <ImageList data={this.props.data}/>
+                    <Arrows handleClick={this.onClick}/>
+                    <ImageList data={this.props.data} size="full"/>
                 </div>
             )
         }
@@ -115,7 +137,9 @@
 
         render() {
             return (
-                <div></div>
+                <div className="controls">
+                    <ImageList data={this.props.data} size="thumb"/>
+                </div>
             )
         }
     }
@@ -129,6 +153,9 @@
             }
         }
 
+        onClick = () => {
+
+        }
 
         onLoad = (dataJson) => {
             this.dataJson = dataJson;
@@ -147,8 +174,8 @@
 
 
                     <div className="layer content">
-                        <View data={this.dataJson}/>
-                        <Control/>
+                        <View data={this.dataJson} handleClick={this.onClick}/>
+                        <Control data={this.dataJson} handleClick={this.onClick}/>
                     </div>
 
                 </React.Fragment>
