@@ -61,7 +61,6 @@
 
 
         render() {
-            console.log(this.state);
             return (
                 <div id="loader-1" className="loader"></div>
             )
@@ -80,7 +79,9 @@
                 size : this.props.size === "full" ? [400, 320] : [80, 80]
             }
         }
+
         render() {
+            console.log('ImageList props->',this.props);
 
             let jsx = (<ul className="imagelist"></ul>);
 
@@ -125,13 +126,11 @@
 
         }
 
-
-
         render() {
             return (
                 <div className="view">
                     <Arrows handleClick={this.onClick}/>
-                    <ImageList data={this.props.data} size="full" />
+                    <ImageList data={this.props.data} size="full" current={this.props.current} />
                 </div>
             )
         }
@@ -142,7 +141,7 @@
         render() {
             return (
                 <div className="controls">
-                    <ImageList data={this.props.data} size="thumb"/>
+                    <ImageList data={this.props.data} size="thumb" current={this.props.current} />
                 </div>
             )
         }
@@ -153,14 +152,22 @@
             super(props);
             this.dataJson = null;
             this.state = {
-                preloaded: false
+                preloaded: false,
+                current : 0
             }
         }
 
         onAction = (slideLeft) => {
 
-
-
+           if ( slideLeft) {
+               this.setState({
+                   current : (this.state.current > 0) ? (this.state.current-1) : (this.dataJson.images.length-1)
+               });
+           } else {
+               this.setState({
+                   current : (this.state.current+1) % this.dataJson.images.length
+               });
+           }
         }
 
         onLoad = (dataJson) => {
@@ -180,8 +187,8 @@
 
 
                     <div className="layer content">
-                        <View data={this.dataJson} handleClick={this.onAction}/>
-                        <Control data={this.dataJson} handleClick={this.onAction}/>
+                        <View data={this.dataJson} handleClick={this.onAction} current={this.state.current} />
+                        <Control data={this.dataJson} handleClick={this.onAction} current={this.state.current} />
                     </div>
 
                 </React.Fragment>
