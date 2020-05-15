@@ -143,3 +143,11 @@ ul{
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
   }
+
+  .imagelist{
+    position:relative;
+    transition : left .2s ease-in-out;
+  }
+  .thumb li.active{
+    opacity:.5;
+  }
