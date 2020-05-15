@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <title>Hello React</title>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <link rel="stylesheet" type="text/css"
-          href="https://raw.githack.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css"
-          media="all"/>
-    <style>
-
-    </style>
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/8d313b76b84394ac0ff271d01cee103858f15eaa/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css"
+            media="all"
+    />
 </head>
 <body>
 <div id="slider" class="etape2"></div>
 <!-- compilation JSX => JS -->
 
 <script type="text/babel">
-
-    const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
+    const jsondata =
+        "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json";
 
     class Loader extends React.Component {
         constructor(props) {
@@ -28,122 +28,164 @@
             this.state = {
                 dataLoaded: false,
                 imagesLoaded: false
-
-            }
+            };
         }
 
         loadData = url => {
-
-            fetch(url).then(response => {
-                return response.json();
-            }).then((data) => {
-                this.data = data;
-                this.setState({dataLoaded: true});
-                this.data.images.forEach((image) => {
-                    image.loaded = false;
-                    const img = new Image();
-                    img.src = `${this.data.path}${this.data.full_folder}/${image.name}.${data.extension}?raw=true`;
-                    img.onload = () => {
-                        image.loaded = true;
-                        this.checkImagesLoad();
-                    }
+            fetch(url)
+                .then(response => {
+                    return response.json();
                 })
-            })
-        }
+                .then(data => {
+                    this.data = data;
+                    this.setState({ dataLoaded: true });
+                    this.data.images.forEach(image => {
+                        image.loaded = false;
+                        const img = new Image();
+                        img.src = `${this.data.path}${this.data.full_folder}/${image.name}.${data.extension}?raw=true`;
+                        img.onload = () => {
+                            image.loaded = true;
+                            this.checkImagesLoad();
+                        };
+                    });
+                });
+        };
 
         checkImagesLoad = () => {
             if (!this.data.images.find(image => image.loaded === false)) {
-                this.setState({imagesLoaded: true});
+                this.setState({ imagesLoaded: true });
 
                 this.props.onload(this.data);
             }
-        }
-
+        };
 
         render() {
-            return (
-                <div id="loader-1" className="loader"></div>
-            )
+            return <div id="loader-1" className="loader"></div>;
         }
 
         componentDidMount() {
             this.loadData(this.props.url);
         }
-
     }
 
     class ImageList extends React.Component {
-        constructor(props){
+        constructor(props) {
             super(props);
-            this.state={
-                size : this.props.size === "full" ? [400, 320] : [80, 80]
-            }
+            this.state = {
+                size: this.props.size === "full" ? [400, 320] : [80, 80]
+            };
+        }
+
+        handleClick = (event) => {
+            //Il faut convertir l'attribut en nombre pour que le test this.props.current === k passe
+            this.props.handleClick(parseInt(event.target.getAttribute("index")))
         }
 
         render() {
-            console.log('ImageList props->',this.props);
-
-            let jsx = (<ul className="imagelist"></ul>);
+            let jsx = (
+                <ul
+                    className={`imagelist ${this.props.size}`}
+                    style={{ left: 0 }}
+                ></ul>
+            );
 
             if (this.props.data) {
-                jsx = (<ul className="imagelist">
-                    {
-                        this.props.data.images.map((image, k) => {
+                let style = {};
+
+                if (this.props.size !== "thumb") {
+                    style = {
+                        width: this.props.data.images.length * this.state.size[0],
+                        left: this.props.current
+                            ? -this.props.current * this.state.size[0]
+                            : 0
+                    };
+                }
+                jsx = (
+                    <ul className={`imagelist ${this.props.size}`} style={style}>
+                        {this.props.data.images.map((image, k) => {
                             return (
-                                <li key={k}>
+                                <li
+                                    key={k}
+                                    className={this.props.current === k ? "active" : ""}
+                                >
                                     <img
-                                        src={`${this.props.data.path}${this.props.data[this.props.size+'_folder']}/${image.name}.${this.props.data.extension}?raw=true`}/>
+                                        index={k}
+                                        onClick={this.handleClick}
+                                        style={{
+                                            width: this.state.size[0],
+                                            height: this.state.size[1]
+                                        }}
+                                        src={`${this.props.data.path}${
+                                            this.props.data[this.props.size + "_folder"]
+                                            }/${image.name}.${this.props.data.extension}?raw=true`}
+                                    />
                                 </li>
-                            )
-                        })
-                    }
-                </ul>);
+                            );
+                        })}
+                    </ul>
+                );
             }
 
-            return (
-                jsx
-            )
+            return jsx;
         }
     }
 
     class Arrows extends React.Component {
-
         render() {
-            return(
+            return (
                 <div className="arrows">
-                    <button className="arrow left" onClick={this.props.handleClick}></button>
-                    <button className="arrow right" onClick={this.props.handleClick}></button>
+                    <button
+                        className="arrow left"
+                        onClick={this.props.handleClick}
+                    ></button>
+                    <button
+                        className="arrow right"
+                        onClick={this.props.handleClick}
+                    ></button>
                 </div>
-            )
+            );
         }
     }
 
     class View extends React.Component {
-
-        onClick = (event) => {
-                const isLeft = event.target.classList.contains("left")
-                this.props.handleClick(isLeft)
-
-        }
+        onClick = event => {
+            const isLeft = event.target.classList.contains("left");
+            this.props.handleClick(isLeft);
+        };
 
         render() {
             return (
                 <div className="view">
-                    <Arrows handleClick={this.onClick}/>
-                    <ImageList data={this.props.data} size="full" current={this.props.current} />
+                    <Arrows handleClick={this.onClick} />
+                    <div className="container">
+                        <ImageList
+                            data={this.props.data}
+                            size="full"
+                            current={this.props.current}
+                        />
+                    </div>
                 </div>
-            )
+            );
         }
     }
 
     class Control extends React.Component {
 
+        onClick = (index) => {
+            this.props.handleClick(index)
+        }
+
         render() {
             return (
                 <div className="controls">
-                    <ImageList data={this.props.data} size="thumb" current={this.props.current} />
+                    <ImageList
+                        data={this.props.data}
+                        size="thumb"
+                        current={this.props.current}
+                        handleClick={this.onClick}
+                    />
                 </div>
-            )
+            );
         }
     }
 
@@ -153,74 +195,66 @@
             this.dataJson = null;
             this.state = {
                 preloaded: false,
-                current : 0
+                current: 0
+            };
+        }
+
+        onControl = (index) => {
+            this.setState({
+                current: index
+            })
+        }
+
+        onAction = slideLeft => {
+            if (slideLeft) {
+                this.setState({
+                    current:
+                        this.state.current > 0
+                            ? this.state.current - 1
+                            : this.dataJson.images.length - 1
+                });
+            } else {
+                this.setState({
+                    current: (this.state.current + 1) % this.dataJson.images.length
+                });
             }
-        }
+        };
 
-        onAction = (slideLeft) => {
-
-           if ( slideLeft) {
-               this.setState({
-                   current : (this.state.current > 0) ? (this.state.current-1) : (this.dataJson.images.length-1)
-               });
-           } else {
-               this.setState({
-                   current : (this.state.current+1) % this.dataJson.images.length
-               });
-           }
-        }
-
-        onLoad = (dataJson) => {
+        onLoad = dataJson => {
             this.dataJson = dataJson;
             this.setState({
                 preloaded: true
-            })
-        }
+            });
+        };
 
         render() {
             return (
                 <React.Fragment>
-
-                    <div className={"layer " + (this.state.preloaded ? 'hide' : '')}>
-                        <Loader url={this.props.url} onload={this.onLoad}/>
+                    <div className={"layer " + (this.state.preloaded ? "hide" : "")}>
+                        <Loader url={this.props.url} onload={this.onLoad} />
                     </div>
-
 
                     <div className="layer content">
-                        <View data={this.dataJson} handleClick={this.onAction} current={this.state.current} />
-                        <Control data={this.dataJson} handleClick={this.onAction} current={this.state.current} />
+                        <View
+                            data={this.dataJson}
+                            handleClick={this.onAction}
+                            current={this.state.current}
+                        />
+                        <Control
+                            data={this.dataJson}
+                            handleClick={this.onControl}
+                            current={this.state.current}
+                        />
                     </div>
-
                 </React.Fragment>
-            )
+            );
         }
     }
 
-
     ReactDOM.render(
-        <Slider url={jsondata}/>,
+        <Slider url={jsondata} />,
         document.getElementById("slider")
     );
-
-
-    //Slider
-
-    //2 LAYERS :
-
-    //LOADER
-
-    //CONTENT
-
-    //VIEW
-
-    //FLECHES
-
-    //LISTE IAMGES FULL
-
-    //CONTROLS
-
-    //LISTE IAMGES THUMB
-
 </script>
 </body>
 </html>
