@@ -30,7 +30,61 @@
 
       const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
 
+      class Loader extends React.Component {
 
+        render(){
+          return(
+            <div id="loader-1" className="loader"></div>
+          )
+        }
+      }
+
+      class View extends React.Component {
+
+        render(){
+          return(
+            <div></div>
+          )
+        }
+      }
+
+      class Control extends React.Component {
+
+        render(){
+          return(
+            <div></div>
+          )
+        }
+      }
+
+      class Slider extends React.Component {
+
+        render(){
+          return (
+            <div>
+
+
+              <div className="layer">
+                <Loader />
+              </div>
+
+
+              <div className="layer content">
+                <View />
+                <Control />
+              </div>
+
+
+            </div>
+          )
+        }
+      }
+
+
+      ReactDOM.render(
+         <Slider/>,
+         document.getElementById("slider")
+     );
 
 
     //Slider
