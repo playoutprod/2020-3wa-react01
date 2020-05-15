@@ -1,31 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Hello React</title>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://raw.githack.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/4a500585580f0897e0e95cda1f52280c243cc493/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css"
+          media="all"/>
     <style>
 
-        .view,.controls{
-            overflow:scroll;
-        }
-        .view{
-            flex:2;
-        }
-        .controls{
-            flex:1;
-        }
-        li{
-            list-style:none;
-        }
     </style>
 </head>
 <body>
 <div id="slider"></div>
 <!-- compilation JSX => JS -->
+
 <script type="text/babel">
 
     const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
@@ -33,87 +24,132 @@
     class Loader extends React.Component {
         constructor(props) {
             super(props);
-            this.data=null;
-            this.state={
-                dataLoaded : false,
-                imagesLoaded : false
+            this.data = null;
+            this.state = {
+                dataLoaded: false,
+                imagesLoaded: false
+
             }
         }
 
         loadData = url => {
 
-          fetch(url).then( response =>{return response.json();}).then((data)=>{
-            this.data=data;
-            this.setState({dataLoaded : true});
-            this.data.images.forEach((image)=>{
-              image.loaded=false;
-                const img=new Image();
-                img.src =`${this.data.path}${this.data.full_folder}/${image.name}.${data.extension}?raw=true`;
-                img.onload = ()=>{
-                    image.loaded=true;
-                    this.checkImagesLoad();
-                }
+            fetch(url).then(response => {
+                return response.json();
+            }).then((data) => {
+                this.data = data;
+                this.setState({dataLoaded: true});
+                this.data.images.forEach((image) => {
+                    image.loaded = false;
+                    const img = new Image();
+                    img.src = `${this.data.path}${this.data.full_folder}/${image.name}.${data.extension}?raw=true`;
+                    img.onload = () => {
+                        image.loaded = true;
+                        this.checkImagesLoad();
+                    }
+                })
             })
-          })
         }
 
         checkImagesLoad = () => {
-          if(!this.data.images.find(image=>image.loaded === false)){
-              this.setState({imagesLoaded : true});
+            if (!this.data.images.find(image => image.loaded === false)) {
+                this.setState({imagesLoaded: true});
 
-              //sendToParent(this.data);
-          }
+                this.props.onload(this.data);
+            }
         }
 
 
-        render(){
+        render() {
             console.log(this.state);
-            return(
+            return (
                 <div id="loader-1" className="loader"></div>
             )
         }
 
-        componentDidMount(){
-          this.loadData(this.props.url);
+        componentDidMount() {
+            this.loadData(this.props.url);
         }
 
     }
 
+    class ImageList extends React.Component {
+
+        render() {
+
+            let jsx = (<ul className="imagelist"></ul>);
+
+            if (this.props.data) {
+                jsx = (<ul className="imagelist">
+                    {
+                        this.props.data.images.map((image, k) => {
+                            return (
+                                <li key={k}>
+                                    <img
+                                        src={`${this.props.data.path}${this.props.data.full_folder}/${image.name}.${this.props.data.extension}?raw=true`}/>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>);
+            }
+
+            return (
+                jsx
+            )
+        }
+    }
+
     class View extends React.Component {
 
-        render(){
-            return(
-                <div></div>
+        render() {
+            return (
+                <div className="view">
+                    <ImageList data={this.props.data}/>
+                </div>
             )
         }
     }
 
     class Control extends React.Component {
 
-        render(){
-            return(
+        render() {
+            return (
                 <div></div>
             )
         }
     }
 
     class Slider extends React.Component {
+        constructor(props) {
+            super(props);
+            this.dataJson = null;
+            this.state = {
+                preloaded: false
+            }
+        }
 
-        render(){
+
+        onLoad = (dataJson) => {
+            this.dataJson = dataJson;
+            this.setState({
+                preloaded: true
+            })
+        }
+
+        render() {
             return (
                 <React.Fragment>
 
-
-                    <div className="layer">
-                        <Loader url={this.props.url}/>
+                    <div className={"layer " + (this.state.preloaded ? 'hide' : '')}>
+                        <Loader url={this.props.url} onload={this.onLoad}/>
                     </div>
 
 
                     <div className="layer content">
-                        <View />
-                        <Control />
+                        <View data={this.dataJson}/>
+                        <Control/>
                     </div>
-
 
                 </React.Fragment>
             )
