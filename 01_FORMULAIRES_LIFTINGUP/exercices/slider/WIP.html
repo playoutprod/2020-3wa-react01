@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8" />
     <title>Hello React</title>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
@@ -9,102 +9,142 @@
     <link rel="stylesheet" type="text/css" href="https://raw.githack.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
     <style>
 
-      .view,.controls{
-        overflow:scroll;
-      }
-      .view{
-        flex:2;
-      }
-      .controls{
-        flex:1;
-      }
-      li{
-        list-style:none;
-      }
+        .view,.controls{
+            overflow:scroll;
+        }
+        .view{
+            flex:2;
+        }
+        .controls{
+            flex:1;
+        }
+        li{
+            list-style:none;
+        }
     </style>
-  </head>
-  <body>
-    <div id="slider"></div>
-    <!-- compilation JSX => JS -->
-    <script type="text/babel">
+</head>
+<body>
+<div id="slider"></div>
+<!-- compilation JSX => JS -->
+<script type="text/babel">
 
-      const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
+    const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
 
-      class Loader extends React.Component {
+    class Loader extends React.Component {
+        constructor(props) {
+            super(props);
+            this.data=null;
+            this.state={
+                dataLoaded : false,
+                imagesLoaded : false
+
+            }
+        }
+
+        loadData = url => {
+
+          fetch(url).then( response =>{return response.json();}).then((data)=>{
+            this.data=data;
+            this.setState({dataLoaded : true});
+            this.data.images.forEach((image)=>{
+              image.loaded=false;
+                const img=new Image();
+                img.src =`${this.data.path}${this.data.full_folder}/${image.name}.${data.extension}?raw=true`;
+                img.onload=()=>{
+                    image.loaded=true;
+                    this.checkImagesLoad();
+                }
+            })
+          })
+        }
+
+        checkImagesLoad = () => {
+          if(!this.data.images.find(image=>image.loaded===false)){
+              this.setState({imagesLoaded : true});
+              //sendToParent(this.data);
+          }
+        }
+
 
         render(){
-          return(
-            <div id="loader-1" className="loader"></div>
-          )
+            console.log(this.state);
+            return(
+                <div id="loader-1" className="loader"></div>
+            )
         }
-      }
 
-      class View extends React.Component {
+        componentDidMount(){
+          this.loadData(this.props.url);
+        }
+
+    }
+
+    class View extends React.Component {
 
         render(){
-          return(
-            <div></div>
-          )
+            return(
+                <div></div>
+            )
         }
-      }
+    }
 
-      class Control extends React.Component {
+    class Control extends React.Component {
 
         render(){
-          return(
-            <div></div>
-          )
+            return(
+                <div></div>
+            )
         }
-      }
+    }
 
-      class Slider extends React.Component {
+    class Slider extends React.Component {
 
         render(){
-          return (
-            <div>
+            return (
+                <React.Fragment>
 
 
-              <div className="layer">
-                <Loader />
-              </div>
+                    <div className="layer">
+                        <Loader url={this.props.url}/>
+                    </div>
 
 
-              <div className="layer content">
-                <View />
-                <Control />
-              </div>
+                    <div className="layer content">
+                        <View />
+                        <Control />
+                    </div>
 
 
-            </div>
-          )
+                </React.Fragment>
+            )
         }
-      }
+    }
 
 
-      ReactDOM.render(
-         <Slider/>,
-         document.getElementById("slider")
-     );
+    ReactDOM.render(
+        <Slider url={jsondata}/>,
+        document.getElementById("slider")
+    );
 
 
     //Slider
 
     //2 LAYERS :
 
-      //LOADER
+    //LOADER
 
-      //CONTENT
+    //CONTENT
 
-        //VIEW
+    //VIEW
 
-          //FLECHES
+    //FLECHES
 
-          //LISTE IAMGES FULL
+    //LISTE IAMGES FULL
 
-        //CONTROLS
+    //CONTROLS
 
-          //LISTE IAMGES THUMB
+    //LISTE IAMGES THUMB
 
-    </script>
-  </body>
+</script>
+</body>
 </html>
