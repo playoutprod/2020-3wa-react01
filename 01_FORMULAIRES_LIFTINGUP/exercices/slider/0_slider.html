@@ -6,7 +6,7 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/a1c23f1860dd389e0f100c213be74027e2b1b22d/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="https://raw.githack.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
     <style>
 
       .view,.controls{
@@ -30,36 +30,24 @@
 
       const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
 
-      class Slider extends React.Component{
-        constructor(props){
-          super(props);
-          this.data = null;
-          this.state = {
-            preloaded : false
-          }
-        }
-        onload = (data) => {
-          this.data = data;
-          this.setState({
-            preloaded : true
-          })
-        }
-        render(){
-          return(
-          <React.Fragment>
-            <div className={"layer"+(this.state.preloaded ? " hide" : "")}>
-                <Loader onLoad={this.onload} json={jsondata}/>
-            </div>
-            <div className="layer content">
-              <View data={this.data}/>
-              <Controls data={this.data}/>
-            </div>
-          </React.Fragment>
-          )
-        }
-      }
 
-     ReactDOM.render(<Slider/>,document.getElementById("slider"));
+    //Slider
+
+    //2 LAYERS :
+
+      //LOADER
+
+      //CONTENT
+
+        //VIEW
+
+          //FLECHES
+
+          //LISTE IAMGES FULL
+
+        //CONTROLS
+
+          //LISTE IAMGES THUMB
 
     </script>
   </body>
