@@ -119,15 +119,19 @@
 
     class View extends React.Component {
 
-        onClick = () => {
+        onClick = (event) => {
+                const isLeft = event.target.classList.contains("left")
+                this.props.handleClick(isLeft)
 
         }
+
+
 
         render() {
             return (
                 <div className="view">
                     <Arrows handleClick={this.onClick}/>
-                    <ImageList data={this.props.data} size="full"/>
+                    <ImageList data={this.props.data} size="full" />
                 </div>
             )
         }
@@ -153,7 +157,9 @@
             }
         }
 
-        onClick = () => {
+        onAction = (slideLeft) => {
+
+
 
         }
 
@@ -174,8 +180,8 @@
 
 
                     <div className="layer content">
-                        <View data={this.dataJson} handleClick={this.onClick}/>
-                        <Control data={this.dataJson} handleClick={this.onClick}/>
+                        <View data={this.dataJson} handleClick={this.onAction}/>
+                        <Control data={this.dataJson} handleClick={this.onAction}/>
                     </div>
 
                 </React.Fragment>
