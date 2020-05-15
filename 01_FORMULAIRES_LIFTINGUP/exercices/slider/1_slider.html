@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/a1c23f1860dd389e0f100c213be74027e2b1b22d/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
+    <style>
+
+      .view,.controls{
+        overflow:scroll;
+      }
+      .view{
+        flex:2;
+      }
+      .controls{
+        flex:1;
+      }
+      li{
+        list-style:none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="slider"></div>
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+      const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
+
+
+      class Imagelist extends React.Component{
+
+        constructor(props){
+          super(props);
+        }
+
+        composeUrl(imageName,size){
+          return(`${this.props.data.path}${this.props.data[this.props.size+"_folder"]}/${imageName}.${this.props.data.extension}?raw=true`)
+        }
+
+        render(){
+          return(
+            <ul className={"imagelist "+this.props.size}>
+              {
+              this.props.data &&
+                this.props.data.images.map((image,k)=>{return(
+                  <li key={k}>
+                    <img loaded={image.loaded ? 1:0} width={this.props.size === "full" ? 400 : 80} height={this.props.size === "full" ? 320 : 80} src={this.composeUrl(image.name,this.props.size)}/>
+                  </li>
+                )})
+              }
+            </ul>
+          )
+        }
+      }
+
+      class View extends React.Component{
+        render(){
+          return(
+          <div className="view">
+            <Imagelist data={this.props.data} size="full"/>
+          </div>
+          )
+        }
+      }
+
+      class Controls extends React.Component{
+        render(){
+          return(
+          <div className="controls">
+            <Imagelist data={this.props.data} size="thumb"/>
+          </div>
+          )
+        }
+      }
+
+      class Loader  extends React.PureComponent{
+        constructor(props){
+          super(props);
+          this.data = null;
+          this.state = {
+            dataLoaded : false,
+            imagesLoaded : false
+          }
+        }
+        loadData(url,callback) {
+          fetch(url)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error("HTTP error " + response.status);
+              }
+              return response.json();
+          })
+          .then(json => {
+            this.setState({
+              dataLoaded : true
+            })
+            this.data = json;
+            this.data.images.forEach( (image) => {
+              image.loaded=false;
+              const img = new Image();
+              img.src = `${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`;
+              img.onload = () => {
+                  image.loaded=true;
+                  image.originalSize = [img.width,img.height];
+                  this.checkImagesLoad();
+              };
+            })
+          })
+        }
+        checkImagesLoad = () => {
+          if(!this.data.images.find(image => image.loaded === false)){
+            this.setState({
+              imagesLoaded : true
+            })
+            this.props.onLoad(this.data);
+          }
+        }
+        render(){
+          console.log(this.state)
+          return(
+            <div id="loader-1" className="loader"></div>
+          )
+        }
+        componentDidMount(){
+          this.loadData(this.props.json)
+        }
+
+      }
+
+      class Slider extends React.Component{
+        constructor(props){
+          super(props);
+          this.data = null;
+          this.state = {
+            preloaded : false
+          }
+        }
+        onload = (data) => {
+          this.data = data;
+          this.setState({
+            preloaded : true
+          })
+        }
+
+        render(){
+          return(
+          <React.Fragment>
+            <div className={"layer"+(this.state.preloaded ? " hide" : "")}>
+                <Loader onLoad={this.onload} json={jsondata}/>
+            </div>
+            <div className="layer content">
+              <View data={this.data}/>
+              <Controls data={this.data}/>
+            </div>
+          </React.Fragment>
+          )
+        }
+      }
+
+     ReactDOM.render(<Slider/>,document.getElementById("slider"));
+
+    </script>
+  </body>
+</html>

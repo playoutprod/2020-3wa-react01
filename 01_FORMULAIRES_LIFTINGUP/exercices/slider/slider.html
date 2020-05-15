@@ -28,6 +28,8 @@
     <!-- compilation JSX => JS -->
     <script type="text/babel">
 
+      const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
+
 
       class Imagelist extends React.Component{
 
@@ -75,14 +77,10 @@
         }
       }
 
-      class Slider extends React.Component{
+      class Loader  extends React.Component{
         constructor(props){
           super(props);
           this.data = null;
-          this.state = {
-            dataLoaded : false,
-            imagesLoaded : false
-          }
         }
         loadData(url,callback) {
           fetch(url)
@@ -93,59 +91,70 @@
               return response.json();
           })
           .then(json => {
-             callback(json);
-          })
-        }
-        onDataLoaded = (data) => {
-          this.data = data;
-          this.data.images.forEach( (image) => {
-            image.loaded=false;
-            const img = new Image();
-            img.src = `${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`;
-            img.onload = () => {
-                image.loaded=true;
-                image.originalSize = [img.width,img.height];
-                this.checkLoad();
-            };
-
-          })
-          this.setState({
-            dataLoaded : true
-          })
-        }
-        checkLoad = () => {
-          if(!this.data.images.find(image => image.loaded === false)){
-            this.setState({
-              imagesLoaded : true
+            this.data = json;
+            this.data.images.forEach( (image) => {
+              image.loaded=false;
+              const img = new Image();
+              img.src = `${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`;
+              img.onload = () => {
+                  image.loaded=true;
+                  image.originalSize = [img.width,img.height];
+                  this.checkImagesLoad();
+              };
             })
+            this.setState({
+              dataLoaded : true
+            })
+          })
+        }
+        checkImagesLoad = () => {
+          if(!this.data.images.find(image => image.loaded === false)){
+            this.props.onLoad(this.data);
           }
+        }
+        render(){
+          return(
+            <div id="loader-1" className="loader"></div>
+          )
+        }
+        componentDidMount(){
+          this.loadData(this.props.json)
+        }
+
+      }
+
+      class Slider extends React.Component{
+        constructor(props){
+          super(props);
+          this.data = null;
+          this.state = {
+            preloaded : false
+          }
+        }
+
+        onload = (data) => {
+          this.data = data;
+          this.setState({
+            preloaded : true
+          })
         }
 
         render(){
           return(
           <React.Fragment>
-
-            <div className={"layer"+(this.state.imagesLoaded ? " hide" : "")}>
-                <div id="loader-1" className="loader"></div>
+            <div className={"layer"+(this.state.preloaded ? " hide" : "")}>
+                <Loader onLoad={this.onload} json={jsondata}/>
             </div>
-
             <div className="layer content">
               <View data={this.data}/>
               <Controls data={this.data}/>
             </div>
-
           </React.Fragment>
           )
         }
-        componentDidMount(){
-          this.loadData("https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json",this.onDataLoaded)
-        }
       }
 
-     ReactDOM.render(
-         <Slider/>,
-         document.getElementById("slider")
-     );
+     ReactDOM.render(<Slider/>,document.getElementById("slider"));
 
     </script>
   </body>

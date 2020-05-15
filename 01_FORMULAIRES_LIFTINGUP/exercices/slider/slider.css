@@ -88,3 +88,41 @@ html,body{
 li{
   list-style:none;
 }
+
+.view,.controls{
+  overflow:scroll;
+}
+.etape2 .view,.controls{
+  overflow:hidden;
+}
+.view{
+  flex:2;
+}
+.controls{
+  flex:1;
+}
+.arrows{
+  position:absolute;
+  top:50%;
+  width:90%;
+  left:5%;
+  transform:translate(0,-50%);
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+}
+.arrow{
+  border: solid black;
+  border-width: 0 12px 12px 0;
+  display: inline-block;
+  padding: 12px;
+  background: none;
+}
+.arrow.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+.arrow.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }

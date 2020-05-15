@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/a1c23f1860dd389e0f100c213be74027e2b1b22d/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
+    <style>
+      .etape2 .imagelist li {
+        display:inline-block;
+      }
+      .etape2#slider{
+        overflow:hidden;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="slider" class="etape2"></div>
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+      const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
+
+
+      class Imagelist extends React.Component{
+
+        constructor(props){
+          super(props);
+          this.state = {
+            size : this.props.size === "full" ? [400,320] : [80,80],
+          }
+        }
+
+        composeUrl(imageName,size){
+          return(`${this.props.data.path}${this.props.data[this.props.size+"_folder"]}/${imageName}.${this.props.data.extension}?raw=true`)
+        }
+
+        render(){
+          let jsx = (<ul className={"imagelist "+this.props.size}/>);
+          if(this.props.data){
+             jsx = (<ul className={"imagelist "+this.props.size} style={{width:this.state.size[0]*this.props.data.images.length}}>
+              {
+                this.props.data.images.map((image,k)=>{return(
+                  <li key={k}>
+                    <img loaded={image.loaded ? 1:0} width={this.state.size[0]} height={this.state.size[1]} src={this.composeUrl(image.name,this.props.size)}/>
+                  </li>
+                )})
+              }
+            </ul>)
+          }
+          return(
+            jsx
+          )
+        }
+      }
+
+      class Arrows extends React.Component{
+        render(){
+          return(
+            <div className="arrows">
+              <button className="arrow left" onClick={this.props.handleClick}/>
+              <button className="arrow right" onClick={this.props.handleClick}/>
+            </div>
+          )
+        }
+      }
+
+      class View extends React.Component{
+        handleClick = (event) => {
+          this.props.onAction(event.target.classList.contains('left'));
+        }
+        render(){
+          return(
+            <div className="view">
+              <Arrows handleClick={this.handleClick}/>
+              <Imagelist data={this.props.data} size="full"/>
+            </div>
+          )
+        }
+      }
+
+      class Controls extends React.Component{
+        handleClick = (event) => {
+          this.props.onAction(event.target.classList.contains('left'));
+        }
+        render(){
+          return(
+          <div className="controls">
+            <Imagelist data={this.props.data} size="thumb"/>
+          </div>
+          )
+        }
+      }
+
+      class Loader  extends React.PureComponent{
+        constructor(props){
+          super(props);
+          this.data = null;
+          this.state = {
+            dataLoaded : false,
+            imagesLoaded : false
+          }
+        }
+        loadData(url,callback) {
+          fetch(url)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error("HTTP error " + response.status);
+              }
+              return response.json();
+          })
+          .then(json => {
+            this.setState({
+              dataLoaded : true
+            })
+            this.data = json;
+            this.data.images.forEach( (image) => {
+              image.loaded=false;
+              const img = new Image();
+              img.src = `${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`;
+              img.onload = () => {
+                  image.loaded=true;
+                  image.originalSize = [img.width,img.height];
+                  this.checkImagesLoad();
+              };
+            })
+          })
+        }
+        checkImagesLoad = () => {
+          if(!this.data.images.find(image => image.loaded === false)){
+            this.setState({
+              imagesLoaded : true
+            })
+            this.props.onLoad(this.data);
+          }
+        }
+        render(){
+          console.log(this.state)
+          return(
+            <div id="loader-1" className="loader"></div>
+          )
+        }
+        componentDidMount(){
+          this.loadData(this.props.json)
+        }
+      }
+
+      class Slider extends React.Component{
+        constructor(props){
+          super(props);
+          this.data = null;
+          this.state = {
+            preloaded : false,
+            current : 0
+          }
+        }
+
+        onload = (data) => {
+          this.data = data;
+          this.setState({
+            preloaded : true
+          })
+        }
+        handleSlide = (slideLeft) => {
+          this.setState((previousState,props) => {
+            return({current : slideLeft ? (previousState.current > 0 ? previousState.current-1 : 0) : (previousState.current < this.data.images.length-1 ? previousState.current+1 : 0)})
+          })
+        }
+        render(){
+          return(
+          <React.Fragment>
+            <div className={"layer"+(this.state.preloaded ? " hide" : "")}>
+                <Loader onLoad={this.onload} json={jsondata}/>
+            </div>
+            <div className="layer content">
+              <View data={this.data} onAction ={this.handleSlide}/>
+              <Controls data={this.data} onAction={this.handleSlide}/>
+            </div>
+          </React.Fragment>
+          )
+        }
+      }
+
+     ReactDOM.render(<Slider/>,document.getElementById("slider"));
+
+    </script>
+  </body>
+</html>
