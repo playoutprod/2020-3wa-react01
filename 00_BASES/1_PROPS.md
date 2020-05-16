@@ -65,4 +65,30 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+### Passage props par un objet
+```
+const Hello = (props) => {
+  return (
+    <div className="heading" >
+        <h1>{props.message}</h1>
+        <p>{props.subtitle}</p>
+      </div>
+  )
+}
+
+const Message = () =>{
+
+  const attr = {
+    message :"Hello React",
+    subtitle : "Enjoy ! "
+  }
+
+  return(<Hello {...attr}/>)
+}
+
+// Rendu dans le DOM
+ReactDOM.render(
+  <Message/>,
+  document.getElementById('root')
+);
 ```
