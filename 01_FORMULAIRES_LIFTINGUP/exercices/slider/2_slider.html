@@ -6,7 +6,7 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/4a500585580f0897e0e95cda1f52280c243cc493/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/f94a6277928b559c4a90b6ff55ebc3045458c83a/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
   </head>
   <body>
     <div id="slider" class="etape2"></div>
@@ -26,7 +26,11 @@
         }
 
         composeUrl(imageName,size){
-          return(`${this.props.data.path}${this.props.data[this.props.size+"_folder"]}/${imageName}.${this.props.data.extension}?raw=true`)
+          return(`${this.props.data.path}${this.props.data[size+"_folder"]}/${imageName}.${this.props.data.extension}?raw=true`)
+        }
+        handleClick = (event) => {
+
+          this.props.handleClick(parseInt(event.target.getAttribute("index")));
         }
 
         render(){
@@ -47,7 +51,7 @@
               {
                 this.props.data.images.map((image,k)=>{return(
                   <li key={k} className={k == this.props.current ? "active" : ""}>
-                    <img loaded={image.loaded ? 1:0} width={this.state.size[0]} height={this.state.size[1]} src={this.composeUrl(image.name,this.props.size)}/>
+                    <img index={k} onClick={this.handleClick} loaded={image.loaded ? 1:0} width={this.state.size[0]} height={this.state.size[1]} src={this.composeUrl(image.name,this.props.size)}/>
                   </li>
                 )})
               }
@@ -87,13 +91,13 @@
       }
 
       class Controls extends React.Component{
-        handleClick = (event) => {
-          this.props.onAction(event.target.classList.contains('left'));
+        handleClick = (index) => {
+          this.props.onAction(index);
         }
         render(){
           return(
           <div className="controls">
-            <Imagelist data={this.props.data} size="thumb" current={this.props.current}/>
+            <Imagelist data={this.props.data} size="thumb" current={this.props.current} handleClick={this.handleClick}/>
           </div>
           )
         }
@@ -108,6 +112,11 @@
             imagesLoaded : false
           }
         }
+
+        composeUrl(imageName,size){
+          return(`${this.data.path}${this.data[size+"_folder"]}/${imageName}.${this.data.extension}?raw=true`)
+        }
+
         loadData(url,callback) {
           fetch(url)
           .then(response => {
@@ -124,7 +133,7 @@
             this.data.images.forEach( (image) => {
               image.loaded=false;
               const img = new Image();
-              img.src = `${this.data.path}/${this.data.full_folder}/${image.name}.${this.data.extension}?raw=true`;
+              img.src = this.composeUrl(image.name,'full');
               img.onload = () => {
                   image.loaded=true;
                   image.originalSize = [img.width,img.height];
@@ -169,10 +178,27 @@
           })
         }
 
-        handleSlide = (slideLeft) => {
-          this.setState((previousState,props) => {
-            return({current : slideLeft ? (previousState.current > 0 ? previousState.current-1 : 0) : (previousState.current < this.data.images.length-1 ? previousState.current+1 : 0)})
+        handleSelect = (index) => {
+          console.log(index)
+          this.setState({
+              current: index
           })
+        }
+
+        handleSlide = (slideLeft) => {
+          if (slideLeft) {
+            this.setState((previousState,props) => (
+              {
+                current: this.state.current > 0 ? (previousState.current-1) : (this.data.images.length-1)
+              })
+            );
+          } else {
+            this.setState((previousState,props) => (
+              {
+                current: (previousState.current + 1) % this.data.images.length
+              })
+            );
+          }
         }
 
         render(){
@@ -183,7 +209,7 @@
             </div>
             <div className="layer content">
               <View data={this.data} onAction ={this.handleSlide} current={this.state.current}/>
-              <Controls data={this.data} onAction={this.handleSlide} current={this.state.current}/>
+              <Controls data={this.data} onAction={this.handleSelect} current={this.state.current}/>
             </div>
           </React.Fragment>
           )

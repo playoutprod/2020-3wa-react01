@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://rawcdn.githack.com/playoutprod/2020-3wa-react01/f94a6277928b559c4a90b6ff55ebc3045458c83a/01_FORMULAIRES_LIFTINGUP/exercices/slider/slider.css" media="all"/>
+  </head>
+  <body>
+    <div id="slider" class="etape2"></div>
+
+    <script type="text/babel">
+
+      class Imagelist extends React.Component{
+
+        //List d'image pour la view (full) et controls (thumb)
+        constructor(props){
+          super(props);
+          //State de gestion de la taille des images (qu'on peut faire varier sur du responsive par exemple)
+          this.state = {
+            size : this.props.size === "full" ? [400,320] : [80,80],
+          }
+        }
+
+        //Gestion du click sur une image
+        handleClick = (event) => {
+          this.props.handleClick(parseInt(event.target.getAttribute("index")));
+        }
+
+        render(){
+          //jsx par defaut
+          let jsx = (<ul className={"imagelist "+this.props.size}/>);
+          if(this.props.data){
+
+            //Si on a des datas
+
+            //Style par defaut
+            let style = {};
+            if(this.props.size === "full"){
+              //pour al view on ajoute un style pour gerer le slide
+              style = {
+                width:this.state.size[0]*this.props.data.images.length,
+                left:-(this.props.current ? this.props.current : 0)*this.state.size[0]
+              }
+            }
+            //Le jsx si data :
+           jsx = (
+            <ul className={"imagelist "+this.props.size} style={style}>
+            {
+              this.props.data.images.map((image,k)=>{
+                //Les props sont écrites dnas un object pour faciliter la lecture.
+                //On ajoute une condition sur le onclick pour la view (qui n'a pas de this.props.handleClick)
+                const props = {
+                  index : k,
+                  onClick : this.props.handleClick ? this.handleClick : ()=>(false),
+                  loaded :image.loaded ? 1:0,
+                  width : this.state.size[0],
+                  height : this.state.size[1],
+                  src : this.props.composeUrl(image.name,this.props.size)
+                }
+                return(
+                  <li key={k} className={k == this.props.current ? "active" : ""}>
+                    <img {...props}/>
+                  </li>
+                )
+              })
+            }
+            </ul>)
+          }
+          //On renvoie le jsx pour le rendu
+          return(jsx)
+        }
+      }
+
+      class Arrows extends React.Component{
+
+        //Au click, on appelle la fonction handleClick de View
+        render(){
+          return(
+            <div className="arrows">
+              <button className="arrow left" onClick={this.props.handleClick}/>
+              <button className="arrow right" onClick={this.props.handleClick}/>
+            </div>
+          )
+        }
+      }
+
+      class View extends React.Component{
+
+        //On transforme l'event en boolean puis on appelle la fonction handleSlide du slider
+        handleClick = (event) => {
+          this.props.onAction(event.target.classList.contains('left'));
+        }
+
+        render(){
+          return(
+            <div className="view">
+              <Arrows handleClick={this.handleClick}/>
+              <div className="container">
+                <Imagelist data={this.props.data} size="full" current={this.props.current} composeUrl={this.props.composeUrl}/>
+              </div>
+            </div>
+          )
+        }
+      }
+
+      class Controls extends React.Component{
+
+        //Ici pas besoin de fonction intermédiaire pour gérer le click, on passe directement celle du parent (Slider.handleSelect)
+
+        render(){
+          return(
+          <div className="controls">
+            <Imagelist data={this.props.data} size="thumb" current={this.props.current} handleClick={this.props.onAction} composeUrl={this.props.composeUrl}/>
+          </div>
+          )
+        }
+      }
+
+      class Loader  extends React.PureComponent{
+
+        constructor(props){
+          super(props);
+          this.state = {
+            dataLoaded : false,
+            imagesLoaded : [0,1]
+          }
+        }
+
+        //Cette fonction est appelée sur le onMount, on affiche le loader puis on commencer à charger.
+        loadData(url,callback) {
+          //Fetch : on envoie une requete, qui renvoie un objet, on convertit le body en json puis on recupère ce json
+          fetch(url)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error("HTTP error " + response.status);
+              }
+              return response.json();
+          })
+          .then(json => {
+
+            //On a récupéré le json on met a jour le state
+
+            this.setState({
+              dataLoaded : true,
+              imagesLoaded : [0,json.images.length]
+            })
+
+            //Pour chaque image, on crée un noeud image avec onload
+            json.images.forEach( (image) => {
+
+              const img = new Image();
+
+              //On appelle la fonction composeurl du slider en lui pssant les datas
+              img.src = this.props.composeUrl(image.name,'full',json);
+
+              img.onload = () => {
+                  //une fois l'image chargée, le naviguateur va la mettre en cache.
+
+                  //On peut ajouter des informations dans les datas comme la taille de l'image chargée.
+                  image.originalSize = [img.width,img.height];
+
+                  //On met a jour le state pour afficher le % de chargement
+                  this.setState((prevState,props) => {
+
+                    //Au passage, on verifie si le chargement est terminé puis on renvoie les données au Slider.
+                    if(prevState.imagesLoaded[0]+1 == prevState.imagesLoaded[1]){
+                      this.props.onLoad(json);
+                    }
+
+                    //Le nouveau state est renvoyé
+                    return({
+                      imagesLoaded : [prevState.imagesLoaded[0]+1,prevState.imagesLoaded[1]]
+                    })
+                  })
+              };
+            })
+          })
+        }
+
+        render(){
+          return(
+            <React.Fragment>
+              <div id="loader-1" className="loader"></div>
+              <div className="log">Chargement : {Math.round(this.state.imagesLoaded[0]*100 / this.state.imagesLoaded[1])}%</div>
+            </React.Fragment>
+          )
+        }
+        componentDidMount(){
+          //Le premier render à été effectué, on commence le chargement
+          this.loadData(this.props.jsonUrl)
+        }
+      }
+
+      class Slider extends React.Component{
+
+        constructor(props){
+          super(props);
+
+          //On va enregistrer les data ici
+          this.data = null;
+
+          //State initial : current = image affichée dans la view (index)
+          this.state = {
+            preloaded : false,
+            current : 0
+          }
+        }
+
+        //Fonction qui permet de composer l'url depuis les datas, on passe cette fonction aux enfants pour tout gérer depuis ici
+        composeUrl(imageName,size,data = this.data){
+          return(`${data.path}${data[size+"_folder"]}/${imageName}.${data.extension}?raw=true`)
+        }
+
+        //Une fois le chargment terminé, on met a jour le state ce qui déclenche un render
+        onload = (data) => {
+          this.data = data;
+          this.setState({
+            preloaded : true
+          })
+        }
+
+        //Gestion du click dans les vignettes
+        handleSelect = (index) => {
+          console.log(index)
+          this.setState({
+              current: index
+          })
+        }
+
+        //Gestion du click dans la view
+        handleSlide = (slideLeft) => {
+          if (slideLeft) {
+            this.setState((previousState,props) => (
+              {
+                current: this.state.current > 0 ? (previousState.current-1) : (this.data.images.length-1)
+              })
+            );
+          } else {
+            this.setState((previousState,props) => (
+              {
+                current: (previousState.current + 1) % this.data.images.length
+              })
+            );
+          }
+        }
+
+        render(){
+          return(
+          <React.Fragment>
+            //Le calque equi contient le loader, la class hide permet de le masquer
+            <div className={"layer"+(this.state.preloaded ? " hide" : "")}>
+                <Loader onLoad={this.onload} jsonUrl={this.props.jsondata} composeUrl={this.composeUrl}/>
+            </div>
+
+            <div className="layer content">
+              <View data={this.data} onAction ={this.handleSlide} current={this.state.current} composeUrl={this.composeUrl}/>
+              <Controls data={this.data} onAction={this.handleSelect} current={this.state.current} composeUrl={this.composeUrl}/>
+            </div>
+
+          </React.Fragment>
+          )
+        }
+      }
+
+      const jsondata = "https://raw.githubusercontent.com/playoutprod/2020-3wa-react01/master/01_FORMULAIRES_LIFTINGUP/exercices/slider/data.json"
+      ReactDOM.render(<Slider jsondata={jsondata}/>,document.getElementById("slider"));
+
+    </script>
+  </body>
+</html>

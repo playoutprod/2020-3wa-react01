@@ -77,8 +77,11 @@
         }
 
         handleClick = (event) => {
-            //Il faut convertir l'attribut en nombre pour que le test this.props.current === k passe
-            this.props.handleClick(parseInt(event.target.getAttribute("index")))
+            //Il faut convertir l'attribut en nombre pour que le test this.props.current === k passe et verifier que handleclick existe
+            if(this.props.handleClick){
+              this.props.handleClick(parseInt(event.target.getAttribute("index")))
+            }
+
         }
 
         render() {

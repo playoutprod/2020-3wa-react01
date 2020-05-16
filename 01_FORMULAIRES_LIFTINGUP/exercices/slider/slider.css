@@ -164,3 +164,15 @@ ul{
   flex-direction: row;
   justify-content: space-between;
 }
+.log{
+  position:relative;
+  width:60%;
+  left:20%;
+  text-align: center;
+  margin-top: 2em;
+  font-family: sans-serif;
+  font-size: smaller;
+  padding: 1em;
+  box-sizing: border-box;
+
+}
