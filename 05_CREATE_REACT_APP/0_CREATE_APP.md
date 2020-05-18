@@ -6,6 +6,7 @@
 - nodeJS  >= 8.10
 
 ## Nouvelles notions
+- [ECMA](https://fr.wikipedia.org/wiki/ECMAScript)
 - [create-react-app](https://github.com/facebook/create-react-app), [v2](https://fr.reactjs.org/blog/2018/10/01/create-react-app-v2.html)
 - package.json
 - webpack [https://webpack.js.org/]
@@ -31,7 +32,6 @@ npx create-react-app my-app --use-npm
 
 Exclure React du bundle.js pour l'inclure depuis le cdn afin d'optimiser le chargement.
 
-- custom config : [react-app-rewired](https://github.com/timarney/react-app-rewired)
 - [Exclude React](https://webpack.js.org/configuration/externals/)
 
 ### Webpack
