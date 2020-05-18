@@ -39,7 +39,7 @@
             //Style par defaut
             let style = {};
             if(this.props.size === "full"){
-              //pour al view on ajoute un style pour gerer le slide
+              //pour la view on ajoute un style pour gerer le slide
               style = {
                 width:this.state.size[0]*this.props.data.images.length,
                 left:-(this.props.current ? this.props.current : 0)*this.state.size[0]
@@ -50,7 +50,7 @@
             <ul className={"imagelist "+this.props.size} style={style}>
             {
               this.props.data.images.map((image,k)=>{
-                //Les props sont écrites dnas un object pour faciliter la lecture.
+                //Les props sont écrites dans un object pour faciliter la lecture.
                 //On ajoute une condition sur le onclick pour la view (qui n'a pas de this.props.handleClick)
                 const props = {
                   index : k,
@@ -60,6 +60,8 @@
                   height : this.state.size[1],
                   src : this.props.composeUrl(image.name,this.props.size)
                 }
+
+
                 return(
                   <li key={k} className={k == this.props.current ? "active" : ""}>
                     <img {...props}/>

@@ -1,6 +1,25 @@
 # TP1 partie 2
 
 
+## STRUCTURE
+```
+FORM
+  WRAPPER
+    H1
+    EMAIL
+  WRAPPER
+    Q1
+      INPUT
+  WRAPPER
+    Q2
+      INPUT
+  WRAPPER
+    Q3
+      INPUT
+RESULTAT
+```
+
+
 ## DATAS
 ```
 const questions = {
