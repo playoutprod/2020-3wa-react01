@@ -56,7 +56,6 @@
           onChange : handleChange,
           required :props.required
         }
-        // class=""
         return(
         <div className="form-group">
           <label htmlFor={props.name} className="col-sm control-label">
@@ -163,23 +162,15 @@
           this.questions = Object.values(props.questions);
           this.state = {
             email:'',
-            isSubmited : false,
             result : this.questions.map(()=>(null)),
             currentPage : 0,
           }
           this.pageCount = 0;
         }
 
-        submit = (event)=>{
-          event.preventDefault();
-          this.setState({
-            isSubmited : true
-          })
-        }
         reset = (event)=>{
           event.target.parentNode.parentNode.reset();
           this.setState({
-            isSubmited : false,
             result : this.questions.map(()=>(null)),
             currentPage : 0
           })
@@ -200,28 +191,41 @@
             email : re.test(String(email).toLowerCase()) ? email : ''
           })
         }
+
         prevPage = () =>{
           this.setState((prevState,props) =>({currentPage : prevState.currentPage-1}))
         }
+
         nextPage = () =>{
           this.setState((prevState,props) =>({currentPage : prevState.currentPage+1}))
         }
 
+
+        //Fonction de validation de chaque page (active ou désactive le bouton suivant)
+
         pageValid(){
           const page = this.state.currentPage;
 
+          //email
           if(this.state.email == ''){
             return(false);
           }
+
+          //Questions
           if(page>0 && this.state.result[page-1] == null){
             return(false);
           }
+
+          //Le reste
           return(true)
         }
 
         addPage = (id) => {
           this.pageCount++;
         }
+
+        //Chaque page reçoit un id, la page courante pour gèrer son propre affichage + une fonction a éxécuter a la construction afin de compter les pages
+        //Le changement de page est lié au state.currentPage
 
         render(){
           let p = 0;
@@ -233,7 +237,8 @@
                   <h1>{this.props.title}</h1>
                   <p>Voici un QCM sur React répondez aux questions ci-dessous, pensez à laisser votre email, champ obligatoire (*) :</p>
                 </Wrapper>
-                <Form disabled={this.state.isSubmited} className="form form-horizontal" onSubmit={this.submit} onReset={this.reset} showButton={this.state.pagesCount ? (this.state.currentPage === this.state.pagesCount-1) : false}>
+
+                <Form className="form form-horizontal" onReset={this.reset} showButton={this.state.pagesCount ? (this.state.currentPage === this.state.pagesCount-1) : false}>
                   <Page className="userInfo" id={p++} current={this.state.currentPage} onConstruct={this.addPage}>
                     <Input type="email" name="email" required={true} onChange={this.checkEmail}/>
                     <p className="alert alert-info" style={{display: (this.state.email === '') ? 'block' : 'none'}}>Entrez un email valide</p>
@@ -246,8 +251,6 @@
                         <Page className="question card m-3 p-3" key={k} id={p++} current={this.state.currentPage} onConstruct={this.addPage}>
                           <h2>{question.title}</h2>
                           <ComponentName index={k} value={question.choices} name={question.name} onChange={this.onInputChange}/>
-                          <p className="alert alert-danger" style={{display: (this.state.isSubmited === true && this.state.result[k] === false) ? 'block' : 'none'}}>{question.feedback}</p>
-                          <p className="alert alert-success" style={{display: (this.state.isSubmited === true && this.state.result[k] === true) ? 'block' : 'none'}}>Bravo !</p>
                         </Page>
                       )
                     })
@@ -261,6 +264,17 @@
                   <div className="result alert alert-warning">
                   {score} bonne{score>1 ? 's' : ''} réponse{score>1 ? 's' : ''} sur {this.state.result.length}
                   </div>
+                  {
+                    this.questions.map((question,k)=>{
+                      return(<div className="Feedback" key={k}>
+                        <h3>Question {k}</h3>
+                        {
+                          this.state.result[k] === false ? (<p className="alert alert-danger">{question.feedback}</p>) : (<p className="alert alert-success">Bonne réponse</p>)
+                        }
+                      </div>)
+                    })
+                  }
+
                 </Page>
             }
             <Nav>
@@ -271,6 +285,8 @@
           )
         }
         componentDidMount(){
+          //Au premier render on compte les pages, puis on déclenche un second render une fois terminé.
+          // Le setState dans componentDidMount déclenche un nouveau render avant que le navigateur affiche quoi que ce soit.
           if(this.pageCount>0){
             this.setState({pagesCount:this.pageCount})
           }
