@@ -143,7 +143,7 @@
           this.state = {
             email:'',
             isSubmited : false,
-            score : this.questions.map(()=>(null))
+            result : this.questions.map(()=>(null))
           }
         }
 
@@ -156,15 +156,15 @@
         reset = (event)=>{
           this.setState({
             isSubmited : false,
-            score : this.questions.map(()=>(null))
+            result : this.questions.map(()=>(null))
           })
         }
 
         onInputChange = (index,response) =>{
           this.setState((prevState,prevProps)=>{
-            prevState.score[index] = response !== null ? (this.questions[index].response == response) : null;
+            prevState.result[index] = response !== null ? (this.questions[index].response == response) : null;
             return({
-              score : prevState.score
+              result : prevState.result
             })
           })
         }
@@ -185,7 +185,7 @@
                   <h1>{this.props.title}</h1>
                   <p>Voici un QCM sur React répondez aux questions ci-dessous, pensez à laisser votre email, champ obligatoire (*) :</p>
                 </Wrapper>
-                <Form disabled={this.state.isSubmited} className="form form-horizontal" onSubmit={this.submit} onReset={this.reset} valid={this.state.email != '' && this.state.score.filter(elmt => elmt == null).length == 0}>
+                <Form disabled={this.state.isSubmited} className="form form-horizontal" onSubmit={this.submit} onReset={this.reset} valid={this.state.email != '' && this.state.result.filter(elmt => elmt == null).length == 0}>
 
                   <Wrapper className="userInfo">
                     <Input type="email" name="email" required={true} onChange={this.checkEmail}/>
@@ -199,8 +199,8 @@
                         <Wrapper className="question card m-3 p-3" key={k}>
                           <h2>{question.title}</h2>
                           <ComponentName index={k} value={question.choices} name={question.name} onChange={this.onInputChange}/>
-                          <p className="alert alert-danger" style={{display: (this.state.isSubmited === true && this.state.score[k] === false) ? 'block' : 'none'}}>{question.feedback}</p>
-                          <p className="alert alert-success" style={{display: (this.state.isSubmited === true && this.state.score[k] === true) ? 'block' : 'none'}}>Bravo !</p>
+                          <p className="alert alert-danger" style={{display: (this.state.isSubmited === true && this.state.result[k] === false) ? 'block' : 'none'}}>{question.feedback}</p>
+                          <p className="alert alert-success" style={{display: (this.state.isSubmited === true && this.state.result[k] === true) ? 'block' : 'none'}}>Bravo !</p>
 
                         </Wrapper>
                       )
@@ -212,7 +212,7 @@
               {
                 this.state.isSubmited == true &&
                 <div className="result alert alert-warning">
-                  resultat : {this.state.score.filter(elmt => elmt == true).length}/{this.state.score.length}
+                  resultat : {this.state.result.filter(elmt => elmt == true).length}/{this.state.result.length}
                 </div>
             }
             </Wrapper>
