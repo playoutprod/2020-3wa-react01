@@ -269,7 +269,7 @@
                       return(<div className="Feedback" key={k}>
                         <h3>Question {k}</h3>
                         {
-                          this.state.result[k] === false ? (<p className="alert alert-danger">{question.feedback}</p>) : (<p className="alert alert-success">Bonne réponse</p>)
+                          <p className={"alert "+(this.state.result[k] === false ? "alert-danger" : "alert-success")}>{(this.state.result[k] === false ? "Presque... " : "Bravo ! ")+question.feedback}</p>
                         }
                       </div>)
                     })
