@@ -12,6 +12,27 @@
 ### import vs require
 ![result](images/import_require.jpg)
 
+
+Export par défaut
+Uniquement des valeurs, fonctions ou classes.
+```
+import [name] from "path/to/file"
+```
+ou
+```
+import {default as [name]} from "path/to/file"
+```
+
+Export ciblé
+Doit être typé, 1 seul export autorisé.
+```
+export function [name] = function(){};
+export class [name]{};
+export {[name]};
+import {[name]} from "path/to/file"
+```
+
+
 ## Codes a tester
 
 ### import

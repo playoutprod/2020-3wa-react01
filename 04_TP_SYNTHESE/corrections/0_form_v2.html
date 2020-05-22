@@ -169,7 +169,9 @@
         }
 
         reset = (event)=>{
+
           event.target.parentNode.parentNode.reset();
+
           this.setState({
             result : this.questions.map(()=>(null)),
             currentPage : 0
