@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="39px" height="39px" viewBox="0 0 39 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>Magnifying_glass_icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="Desktop-HD" transform="translate(-992.000000, -122.000000)" stroke="#FFFFFF" stroke-width="5">
+            <g id="Group-3" transform="translate(318.000000, 79.000000)">
+                <g id="hover" transform="translate(525.000000, 15.000000)">
+                    <g id="Magnifying_glass_icon" transform="translate(152.000000, 31.000000)">
+                        <path d="M18.6780271,18.4533819 C22.8813603,14.1905958 22.8337071,7.34730133 18.5714129,3.14294415 C14.3091188,-1.06141303 7.43520751,-1.04559891 3.19247652,3.17832493 C-1.05025448,7.40224877 -1.06613901,14.2456894 3.1569382,18.4890897 C7.38001541,22.73249 14.2537798,22.779932 18.5355461,18.5952313 L30.6464306,30.6524307 M24.1635454,22.3542405 L32,30.1559577 L30.1477471,32 L22.3112924,24.1982827" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
