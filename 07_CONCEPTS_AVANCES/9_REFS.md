@@ -1,3 +1,17 @@
+
+# REFS
+
+## Notions nécessaires
+- DOM
+- DOM Virtuel
+
+## Nouvelles notions
+- React.createRef
+
+
+## Codes a tester
+
+```
 import React from 'react';
 
 class App extends React.Component{
@@ -19,3 +33,4 @@ class App extends React.Component{
 
 }
 export default App;
+```
