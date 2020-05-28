@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+    const Counter = () => {
+
+      const [count1, setCount1] = React.useState(0);
+
+      let perdu = 0;
+      const gagne = React.useRef(0);
+
+      React.useEffect( () => {
+        console.log('perdu : '+perdu)
+        console.log('gagne : '+gagne.current);
+        perdu++;
+        gagne.current++;
+      })
+
+      return (
+          <div>
+          <p>You clicked {count1} times</p>
+          <button onClick={() => setCount1(count1 + 1)}>
+          First
+          </button>
+          </div>
+      );
+  }
+
+  const App = () =>{
+    const [display, setDisplay] = React.useState(true);
+    return(
+      <div>
+        <button onClick={() => setDisplay(false)}>
+          Delete
+        </button>
+        {display && <Counter/>}
+    </div>
+    )
+  }
+
+  ReactDOM.render(
+    <App/>,
+    document.getElementById('root')
+  );
+    </script>
+  </body>
+</html>
