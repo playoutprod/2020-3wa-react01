@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+    const Counter = () => {
+
+      const [count, setCount] = React.useState(0);
+      const timerId = React.useRef(null);
+
+      const stop = () =>{
+        if(timerId.current === null){
+          return;
+        }
+        console.log('stop '+timerId.current)
+        clearInterval(timerId.current)
+        timerId.current = null;
+      }
+
+      const start = () => {
+        if(timerId.current !== null){
+          return;
+        }
+        timerId.current=setInterval(()=>{
+          setCount(count => count+1);
+        },1000);
+      }
+
+      const reset = () => {
+          stop();
+          setCount(0);
+      }
+
+      React.useEffect(()=>{
+        return(()=>{
+            stop();
+        })
+      },[])
+
+      return (
+          <div>
+          <p>count : {count}</p>
+          <button onClick={start}>
+            start
+          </button>
+          <button onClick={stop}>
+            stop
+          </button>
+          <button onClick={reset}>
+            reset
+          </button>
+          </div>
+      );
+    }
+
+  const App = () =>{
+    const [display, setDisplay] = React.useState(false);
+    return(
+      <div>
+        <button onClick={() => setDisplay(!display)}>
+          {display ? 'hide' : 'show'}
+        </button>
+        {display && <Counter/>}
+    </div>
+    )
+  }
+
+  ReactDOM.render(
+    <App/>,
+    document.getElementById('root')
+  );
+    </script>
+  </body>
+</html>
