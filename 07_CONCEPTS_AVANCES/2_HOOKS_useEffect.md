@@ -14,9 +14,9 @@ const Counter = () => {
 
    React.useEffect( () => console.log("mount"), [] );
 
-   React.useEffect( () => console.log("will update count1"), [ count1 ] );
+   React.useEffect( () => console.log("count1 updated"), [ count1 ] );
 
-   React.useEffect( () => console.log("will update any") );
+   React.useEffect( () => console.log("any updated") );
 
    React.useEffect( () => () => console.log("will update count1 or unmount"), [  count1 ] );
 
