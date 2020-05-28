@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="70px" height="70px" viewBox="0 0 70 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>auto zoom</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-HD" transform="translate(-1310.000000, -554.000000)" fill="#D8D8D8">
+            <g id="auto-zoom" transform="translate(1310.000000, 554.000000)">
+                <path d="M1.13686838e-13,42 L10,42 L10,54 C10,57.2383969 12.5655749,59.8775718 15.7750617,59.9958615 L16,60 L29,60 L29,70 L13,70 C5.82029825,70 3.41939773e-13,64.1797017 3.41060513e-13,57 L1.13686838e-13,42 Z M70,42 L70,57 C70,64.1797017 64.1797017,70 57,70 L42,70 L42,60 L54,60 C57.2383969,60 59.8775718,57.4344251 59.9958615,54.2249383 L60,54 L60,42 L70,42 Z M70,13 L70,29 L60,29 L60,16 C60,12.6862915 57.3137085,10 54,10 L42,10 L42,0 L57,0 C64.1797017,-1.31888981e-15 70,5.82029825 70,13 Z M29,0 L29,10 L16,10 C12.7616031,10 10.1224282,12.5655749 10.0041385,15.7750617 L10,16 L10,29 L1.13686838e-13,29 L3.41060513e-13,13 C3.40181253e-13,5.82029825 5.82029825,1.31888981e-15 13,0 L29,0 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>
