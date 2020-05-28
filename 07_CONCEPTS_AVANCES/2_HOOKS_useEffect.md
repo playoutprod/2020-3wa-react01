@@ -8,13 +8,46 @@
 
 ## Codes a tester
 ```
-React.useEffect(onUpdateFunction(){return cleanFunction},varArray)
+const Counter = () => {
 
-useEffect( () => console.log("mount"), [] );
-useEffect( () => console.log("will update data1"), [ data1 ] );
-useEffect( () => console.log("will update any") );
-useEffect( () => () => console.log("will update data1 or unmount"), [ data1 ] );
-useEffect( () => () => console.log("unmount"), [] );
+  const [count1, setCount1] = React.useState(0);
+
+   React.useEffect( () => console.log("mount"), [] );
+
+   React.useEffect( () => console.log("will update count1"), [ count1 ] );
+
+   React.useEffect( () => console.log("will update any") );
+
+   React.useEffect( () => () => console.log("will update count1 or unmount"), [  count1 ] );
+
+   React.useEffect( () => () => console.log("unmount"), [] );
+
+  return (
+      <div>
+      <p>You clicked {count1} times</p>
+      <button onClick={() => setCount1(count1 + 1)}>
+      First
+      </button>
+      </div>
+  );
+}
+
+const App = () =>{
+const [display, setDisplay] = React.useState(true);
+return(
+  <div>
+    <button onClick={() => setDisplay(false)}>
+      Delete
+    </button>
+    {display && <Counter/>}
+</div>
+)
+}
+
+ReactDOM.render(
+<App/>,
+document.getElementById('root')
+);
 
 ```
 
