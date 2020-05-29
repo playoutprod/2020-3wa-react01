@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <h1>Use callback test</h1>
+    <div id="root"></div>
+
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+      const triggerFunc = new Set();
+      const triggerFunc2 = new Set();
+
+
+      const App = (props) => {
+        const [count, setCount] = React.useState(1);
+        const [pos, setPos] = React.useState(0);
+
+        const incrementCount = () => setCount(count => count + 1);
+        const incrementPos = () => setPos(pos => pos + 1);
+
+        //const incrementCount = React.useCallback( () => setCount(count => count + 1), [] );
+        //const incrementPos = React.useCallback( () => setPos(pos => pos + count), []);
+
+        triggerFunc.add(incrementCount)
+        triggerFunc2.add(incrementPos)
+
+        console.log(incrementCount.size,triggerFunc2.size);
+
+
+      return (
+        <div>
+          <p> Count : {count} </p>
+          <p> Pos : {pos} </p>
+          <p>
+          <button onClick={incrementCount}>count</button>
+          </p>
+          <p>
+          <button onClick={incrementPos}>pos</button>
+          </p>
+          <p> Creation de fonction(s) & nouvelles fonctions: {triggerFunc.size} </p>
+        </div>
+        );
+      }
+
+
+      ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+      );
+
+    </script>
+</body>
+</html>
