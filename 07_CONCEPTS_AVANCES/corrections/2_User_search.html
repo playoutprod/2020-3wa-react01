@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+    const useFetch = (url) => {
+
+      const [status, setLoadingStatus] = React.useState(false);
+      const [message, setMessage] = React.useState('Loading');
+      const [data, setData] = React.useState(null);
+
+      async function loadData() {
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        setData(data);
+        setMessage('Complete');
+        setLoadingStatus(true);
+      }
+
+      React.useEffect(
+        () => {
+          loadData()
+        },
+          [url]
+      )
+
+      return [data,status,message]
+    }
+
+    const Users = ({data,search}) => {
+
+      const regex = new RegExp('.*'+ search+'.*','i');
+      const filteredData = data.filter( user => user.name.match(regex));
+
+      return (
+          <ul className="users">
+            {
+              filteredData.map((user,k)=>(<li key={k} className="user">{user.name}</li>))
+            }
+          </ul>
+      );
+    }
+
+  const App = (props) =>{
+
+    const [data,status,message] = useFetch('https://jsonplaceholder.typicode.com/users/');
+
+    const [search,setSearch] = React.useState('');
+
+    const handleChange = (e) =>{
+        setSearch(e.target.value);
+    }
+
+    return(
+      <div>
+        <p>{message}</p>
+        { status && <input type ="text" onChange={handleChange}></input>}
+        { status && search !=='' && <Users data={data} search={search}/>}
+      </div>
+    )
+  }
+
+  ReactDOM.render(
+    <App/>,
+    document.getElementById('root')
+  );
+    </script>
+  </body>
+</html>
