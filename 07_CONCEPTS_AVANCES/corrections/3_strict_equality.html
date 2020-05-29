@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <h1>Counter useEffect & useState</h1>
+    <div id="root"></div>
+
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+        const greeting = 'hello';
+        const otherGreeting = 'hello';
+
+        function foo() {
+          return 'bar';
+        }
+
+        const otherFoo = function() {
+          return `bar`;
+        };
+
+        const anotherFoo = () => 'bar';
+
+        function sameFoo() {
+          return 'bar';
+        }
+
+        const fooReference = foo;
+
+        'hello' === 'hello'; // true
+        greeting === otherGreeting; // true
+
+        foo === foo; // true
+        foo === otherFoo; // false
+        foo === anotherFoo; // false
+        foo === sameFoo; // false
+        foo === fooReference; // true
+
+    </script>
+</body>
+</html>

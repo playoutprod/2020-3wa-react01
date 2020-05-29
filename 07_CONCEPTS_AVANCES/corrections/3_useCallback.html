@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <h1>Use callback test</h1>
+    <div id="root"></div>
+
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+      function WrongUser({ userId }) {
+
+        const [user, setUser] = React.useState({ name: '', email: '' });
+
+        const fetchUser = async () => {
+
+          const res = await fetch(
+            `https://jsonplaceholder.typicode.com/users/`
+          );
+          const newUser = await res.json();
+          setUser(newUser);
+        };
+
+        React.useEffect(() => {
+          fetchUser();
+        }, []);
+
+        return (
+          <ListItem dense divider>
+            <ListItemText primary={user.name} secondary={user.email} />
+          </ListItem>
+        );
+      }
+
+
+
+      const mySet = new Set();
+
+      function GoodUser({ userId }) {
+
+        const [user, setUser] = React.useState({ name: '', email: '' });
+
+        const fetchUser = React.useCallback( async () => {
+          console.log('fetching ');
+          const res = await fetch(
+            `https://jsonplaceholder.typicode.com/users/`
+          );
+          const users = await res.json();
+          const newUser = users.filter(user => user.id === userId);
+          console.log('done ',newUser);
+          if(newUser.length>0){
+            setUser(newUser[0]);
+          }
+        },[userId]);
+
+        mySet.add(fetchUser);
+        console.log(mySet.size);
+
+        React.useEffect(() => {
+
+          fetchUser();
+
+        }, [fetchUser]);
+
+        return (
+          <div>
+            {
+              'name :'+user.name}
+              <br/>
+              {
+              'email :'+user.email
+            }
+          </div>
+        );
+      }
+
+
+
+      function App(){
+
+        const [userid,setUserid] = React.useState(1);
+        const input = React.useRef(null);
+
+        const changeUserId = (e) => {
+
+          if(input.current.value !== '' && input.current.value > 0){
+            setUserid(parseInt(input.current.value))
+          }
+        }
+
+        return(<div>
+          <GoodUser userId={userid}/>
+          <input ref={input} type="number"></input>
+          <button onClick={changeUserId}>fetch</button>
+        </div>)
+      }
+
+
+      ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+      );
+
+    </script>
+</body>
+</html>
