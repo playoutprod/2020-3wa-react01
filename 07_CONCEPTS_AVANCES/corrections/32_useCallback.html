@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+      const randomColour = () => '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+
+      const Button = React.memo((props)=>{
+        return(
+          <button style={{backgroundColor:randomColour()}} onClick={props.handleClick}>CLIQUE MOI</button>
+        )
+      })
+
+      function App(){
+
+        const getAge = () => {
+          return("J'ai "+Math.floor(Math.random()*100)+" ans")
+        }
+        const [title,setTitle] = React.useState(getAge())
+
+        /*
+        const handleClick = React.useCallback((e)=>{
+          setTitle(getAge())
+        },[])
+        */
+
+        const handleClick = (e)=>{
+          setTitle(getAge())
+        }
+
+
+        return(
+        <div>
+          <h1>{title}</h1>
+          <Button handleClick={handleClick}></Button>
+        </div>)
+      }
+
+
+      ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+      );
+
+    </script>
+</body>
+</html>

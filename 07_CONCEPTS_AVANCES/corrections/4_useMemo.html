@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+      const data = [
+          "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+          "ea molestias quasi exercitationem repellat qui ipsa sit aut"
+      ]
+
+
+      const RemoteTitle = ({title,color}) => {
+
+        const computeExpensiveValue = ()=>{
+          const date = Date.now();
+          while (Date.now() - date < 2000){};
+          return(title)
+        }
+
+        //Return memoized value
+        //const memoizedTitle = React.useMemo(() => computeExpensiveValue(), [title]);
+
+        //Return a memoized function, does not work for this exemple
+        //const memoizedTitle = React.useCallback(computeExpensiveValue,[title])
+
+        return(<h1 style={{color:color}}>{memoizedTitle}</h1>)
+      }
+
+      function App(){
+        const randomColour = () => '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+        const [color,setColor] = React.useState(randomColour());
+        const [title,setTitle] = React.useState(0);
+
+        return(
+        <div>
+          <RemoteTitle title={data[title]} color={color}></RemoteTitle>
+          <button onClick={()=>{
+            setColor(randomColour())
+          }}>COLOR</button>
+          <button onClick={()=>{
+            setTitle(title === 0 ? 1 : 0)
+          }}>TITLE</button>
+        </div>)
+      }
+
+
+      ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+      );
+
+    </script>
+</body>
+</html>

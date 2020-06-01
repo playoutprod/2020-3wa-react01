@@ -22,11 +22,12 @@
         const [count, setCount] = React.useState(1);
         const [pos, setPos] = React.useState(0);
 
-        //const incrementCount = () => setCount(count => count + 1);
-        //const incrementPos = () => setPos(pos => pos + 1);
+        const incrementCount = () => setCount(count => count + 1);
+        const incrementPos = () => setPos(pos => pos + 1);
 
-        const incrementCount = React.useCallback( () => setCount(count => count + 1), [] );
-        const incrementPos = React.useCallback( () => setPos(pos => pos + count), [count]);
+
+        //const incrementCount = React.useCallback( () => setCount(count => count + 1),[]);
+        //const incrementPos = React.useCallback( () => setPos(pos => pos + count),[count]);
 
         triggerFunc.add(incrementCount)
         triggerFunc2.add(incrementPos)

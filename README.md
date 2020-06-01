@@ -14,3 +14,5 @@
 ## Notes
 
 - Error handling through state
+- Memoization
+- Strict equality

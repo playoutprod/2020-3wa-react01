@@ -14,59 +14,54 @@
     <!-- compilation JSX => JS -->
     <script type="text/babel">
 
-      function WrongUser({ userId }) {
-
-        const [user, setUser] = React.useState({ name: '', email: '' });
-
-        const fetchUser = async () => {
-
-          const res = await fetch(
-            `https://jsonplaceholder.typicode.com/users/`
-          );
-          const newUser = await res.json();
-          setUser(newUser);
-        };
-
-        React.useEffect(() => {
-          fetchUser();
-        }, []);
-
-        return (
-          <ListItem dense divider>
-            <ListItemText primary={user.name} secondary={user.email} />
-          </ListItem>
-        );
-      }
-
-
-
       const mySet = new Set();
 
       function GoodUser({ userId }) {
 
         const [user, setUser] = React.useState({ name: '', email: '' });
 
-        const fetchUser = React.useCallback( async () => {
+        const fetchData = async()=>{
           console.log('fetching ');
-          const res = await fetch(
-            `https://jsonplaceholder.typicode.com/users/`
-          );
+          const res = await fetch('https://jsonplaceholder.typicode.com/users/');
           const users = await res.json();
           const newUser = users.filter(user => user.id === userId);
           console.log('done ',newUser);
           if(newUser.length>0){
+            //Here comes the loop !
             setUser(newUser[0]);
           }
-        },[userId]);
+        }
+
+        //In order to get data and display userdata, we use a function that fetch and update the state
+
+        /*
+        Without useCallback, there's no way to avoid loop on function that change the state
+        const fetchUser = async () => {fetchData()};
+        */
+
+        //With useCallback, function is always the same expect if userId change
+        const fetchUser = React.useCallback( async () => {fetchData()},[userId]);
+
+        //Decomment this to have a loop (fct -> fetch -> setUser -> fct etc...)
+        //The function is the same (set size does not change but called at each render)
+        //fetchUser();
+
+        //To avoid fetching each time, we place the call in a useEffect.
+        //We can add a var to control
+        /*
+        React.useEffect(() => {
+          fetchUser();
+        }, [userId]);
+        */
+
+        //Or we can use the function but it has to be the same each loop
+        React.useEffect(() => {
+          fetchUser();
+        }, [fetchUser]);
+
 
         mySet.add(fetchUser);
         console.log(mySet.size);
-
-        React.useEffect(() => {
-
-          fetchUser();
-
-        }, [fetchUser]);
 
         return (
           <div>
