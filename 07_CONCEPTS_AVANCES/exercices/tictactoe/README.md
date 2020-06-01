@@ -4,8 +4,6 @@
 ## Notions nécessaires
 - hooks perso pour joueurs
 
-
-
 ## Nouvelles notions
 - useReducer
 
