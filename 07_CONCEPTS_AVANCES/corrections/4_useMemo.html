@@ -28,8 +28,9 @@
         }
 
         //Return memoized value
-        //const memoizedTitle = React.useMemo(() => computeExpensiveValue(), [title]);
+        const memoizedTitle = React.useMemo(() => computeExpensiveValue(), [title]);
 
+        //const memoizedTitle =computeExpensiveValue(title);
         //Return a memoized function, does not work for this exemple
         //const memoizedTitle = React.useCallback(computeExpensiveValue,[title])
 

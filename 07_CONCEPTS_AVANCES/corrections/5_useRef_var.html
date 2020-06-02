@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+<body>
+    <h1>useRef with var</h1>
+    <div id="root"></div>
+
+    <!-- compilation JSX => JS -->
+    <script type="text/babel">
+
+      const mySet = new Set();
+
+      const User = ({age,isYoung})=>{
+        return(<span>User is {age} so he is {isYoung ? 'young' : 'old'}</span>)
+      }
+
+
+      function useAge() {
+
+        /*
+        let userAge = 0;
+        userAge += 10;
+        */
+
+        const userAge = React.useRef(0);
+        userAge.current+=10;
+
+
+        const isYoung = (age) =>{
+          return(age<50)
+        }
+
+        return([userAge.current,isYoung(userAge.current)])
+      }
+
+
+
+      function App(){
+
+        const [age,isYoung] = useAge();
+        
+        const [render,setRender]= React.useState(0);
+
+        const handleClick = () => {
+          setRender(Math.random())
+        }
+
+        return(
+          <div>
+            <User age={age} isYoung={isYoung}/><br/><br/>
+            <button onClick={handleClick}>Vieillir</button>
+          </div>
+        )
+      }
+
+
+      ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+      );
+
+    </script>
+</body>
+</html>

@@ -36,8 +36,9 @@
 
         /*
         Without useCallback, there's no way to avoid loop on function that change the state
-        const fetchUser = async () => {fetchData()};
+
         */
+        //const fetchUser = async () => {fetchData()};
 
         //With useCallback, function is always the same expect if userId change
         const fetchUser = React.useCallback( async () => {fetchData()},[userId]);
@@ -48,11 +49,11 @@
 
         //To avoid fetching each time, we place the call in a useEffect.
         //We can add a var to control
-        /*
-        React.useEffect(() => {
+
+        /*React.useEffect(() => {
           fetchUser();
-        }, [userId]);
-        */
+        }, [userId]);*/
+
 
         //Or we can use the function but it has to be the same each loop
         React.useEffect(() => {
