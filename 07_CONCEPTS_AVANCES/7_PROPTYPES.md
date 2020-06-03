@@ -81,5 +81,38 @@ customArrayProp: PropTypes.arrayOf(function(propValue, key, componentName, locat
 })
 };
 
+```
+### control proptypes with object
+```
+const attr = {
+  value :null,
+  id : 0
+}
+return <Square {...attr}/>
 
+/*
+equivalent to
+
+return <Square value={null} id=0 value={null} />
+
+In Square component props.value is defined so not using defaultProps
+props = {
+  value : null
+}
+props.value = null;
+*/
+
+
+const attr = { id : 0 }
+if(value){attr.value:value}
+
+return <Square {...attr}/>
+
+
+/*
+In Square component, vlaue props is passed if exists, otherwise it takes default value in defautProps.
+props = {id:0}
+props.value = defaultProps.value
+props.id : 0
+*/
 ```
