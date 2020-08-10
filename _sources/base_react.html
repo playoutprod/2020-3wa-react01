@@ -16,24 +16,34 @@
   </head>
 
   <body>
+
+
+
     <div id="root"></div>
+
+
+
     <script type="text/babel">
 
-      // Component
       const Hello = (props) => {
-        return (
-          <div className="heading" >
-              <h1>{props.message}</h1>
-              <p>{props.subtitle}</p>
-            </div>
-        )
+        return <h1>Hello, {props.name}</h1>;
       }
 
-      // Rendu dans le DOM
-      ReactDOM.render(
-        <Hello message = "Hello React" subtitle="Enjoy ! "/>,
+      const App = () => {
+        return (
+          <div>
+            <Hello name="Alan" />
+            <Hello name="Naoudi" />
+            <Hello name="Fenley" />
+          </div>
+        );
+      }
+
+
+        ReactDOM.render(
+        <App />,
         document.getElementById('root')
-      );
+        );
 
       </script>
   </body>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <style>
+        .heading{
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class ListDragon extends React.Component{
+
+            render() {
+                return (
+                    <ul>
+                        <li>Apalala</li>
+                        <li>Balaur</li>
+                        <li>Bolla</li>
+                        <li>Nessie</li>
+                    </ul>
+                )
+            }
+        }
+
+        class ListKnight extends React.Component{
+
+            render() {
+                return (
+                    <ul>
+                        <li>Lancelot</li>
+                        <li>Bohort</li>
+                        <li>Dagonet</li>
+                        <li>Gauvain</li>
+                    </ul>
+                )
+            }
+        }
+
+        class App extends React.Component{
+
+            render(){
+                return (
+                   TODO
+                )
+            }
+        }
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>
