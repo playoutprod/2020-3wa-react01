@@ -84,13 +84,13 @@ const [a,b,c,d] = a1;
 const [e,f,...rest] = a1;
 
 ```
-a = 1
-b = 2
-c = 3
-d = 4
-e = 1
-f = 2
-rest = [3,4]
+a = 1  
+b = 2  
+c = 3  
+d = 4  
+e = 1  
+f = 2  
+rest = [3,4]  
 
 
 ```
