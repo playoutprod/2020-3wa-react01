@@ -81,11 +81,17 @@ const o3 = {...o1,"k2":"v2"}
 ```
 const a1 = [1,2,3,4]
 const [a,b,c,d] = a1;
+const [e,f,...rest] = a1;
+
 ```
 a = 1
 b = 2
 c = 3
 d = 4
+e = 1
+f = 2
+rest = [3,4]
+
 
 ```
 const o1 = {
