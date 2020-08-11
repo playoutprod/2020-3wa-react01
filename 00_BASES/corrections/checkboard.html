@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      .checkboard {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width:800px;
+      }
+      .square{
+        width:200px;
+        height:200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border:1px solid cyan;
+        box-sizing: border-box;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+
+
+    <div id="root"></div>
+
+
+
+    <script type="text/babel">
+
+        const colors = [
+          "#1e88e5",
+          "#6ab7ff",
+          "#005cb2",
+          "#1976d2",
+        ];
+
+
+
+
+
+        const Square = (props) => {
+
+          const {color,index,coord} = props;
+
+
+          return(
+            <div className="square" style={{backgroundColor:color}}>
+            {index}
+            <span>[{coord.join(',')}]</span>
+
+            </div>)
+
+        }
+
+
+
+
+
+        const Checkerboard = (props) => {
+
+          const elements = Array.from(Array(props.sizes[0]*props.sizes[1]).keys());
+
+          return(<div className="checkboard">
+            {
+              elements.map((element,k)=>{
+
+                const x = k%props.sizes[0];
+
+                const y = Math.floor(k/props.sizes[1]);
+                
+                return(<Square key={k} index={k} coord={[x,y]} color={props.colors[k%props.sizes[0]]}/>)
+              })
+            }
+
+          </div>)
+        }
+
+
+        ReactDOM.render(
+
+        <Checkerboard sizes={[4,4]} colors={colors}/>,
+
+        document.getElementById('root')
+        );
+
+      </script>
+  </body>
+</html>
