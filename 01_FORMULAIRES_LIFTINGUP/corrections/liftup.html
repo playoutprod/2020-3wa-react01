@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+  </head>
+
+  <body>
+
+
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const decimalToBinary = (num) => {
+            if(num == '') return 0 ;
+            let b = [];
+            while (num > 0){
+              let r = num % 2;
+              b.push(r);
+
+              num = Math.trunc( num / 2 );
+            }
+            return b.reverse().join('');
+        }
+
+        const binaryToDecimal = (bnum) => {
+          if(bnum == '') return 0 ;
+
+          return bnum.split('').reverse()
+                  .map((b, i) => parseInt(b)*2**i )
+                  .reduce((acc, curr) => acc + curr);
+        }
+
+
+        class BaseNumberInput extends React.Component{
+
+          constructor(props){
+            super(props);
+
+
+            //this.props.value
+
+            this.state = {
+              value : 0
+            }
+          }
+
+          handleChange = (e) => {
+            this.props.handleChange(e.target.value,this.props.type);
+            this.setState({
+              value : e.target.value
+            })
+          }
+
+          render(){
+            return(<div className="base_number_input">
+              {this.props.type}  : <input name="number_input" type="text" value={this.state.value} onChange={this.handleChange}/>
+            </div>)
+          }
+
+        }
+
+        class App extends React.Component{
+
+          constructor(props){
+            super(props);
+            this.state = {
+              decimal : 0,
+              binary : 0
+            }
+          }
+
+          handleChange = (value,type) => {
+            let decimal = 0;
+            let binary = 0;
+
+            if(type === 'decimal'){
+              binary = decimalToBinary(value);
+            }else{
+              decimal = binaryToDecimal(value);
+            }
+
+            this.setState({
+              binary,decimal
+            });
+
+
+          }
+
+          render(){
+            return(
+              <div className="app">
+                <BaseNumberInput type="decimal" handleChange={this.handleChange} value={this.state.decimal}/>
+                <BaseNumberInput type="binary" handleChange={this.handleChange} value={this.state.binary}/>
+              </div>
+            )
+          }
+        }
+
+        ReactDOM.render(
+        <App />,
+        document.getElementById('root')
+        );
+
+      </script>
+  </body>
+</html>
