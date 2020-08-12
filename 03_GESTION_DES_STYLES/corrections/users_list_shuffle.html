@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- permet de compiler le JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .app{
+            width:600px;
+            margin:auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        ul{
+          margin:0;padding:0;
+          width:100%;
+        }
+
+        li{
+          cursor: pointer;
+          list-style: none;
+          display: flex;
+        }
+        li span {
+          display: inline-block;
+          padding: .5em;
+          width:100%;
+        }
+        button {
+          margin:2em 0;
+        }
+
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+  const users = [
+      { id : 1, name : "Alice" },
+      { id : 2, name : "Alan"  },
+      { id : 3, name : "Phil" },
+      { id : 4, name : "Naoudi" },
+      { id : 5, name : "Fenley" },
+  ];
+
+  const styles = [
+    {color :"#721c24", backgroundColor : "#f5c6cb"},
+    {color :"#155724", backgroundColor : "#c3e6cb"},
+  ];
+
+
+  class User extends React.Component{
+
+    constructor(props){
+      super(props);
+      this.state = {over : false}
+    }
+
+    handleOver = (e) => {
+      this.setState({
+        over : e.type === "mouseover"
+      })
+    }
+
+    render(){
+      const style = this.state.over ? styles[0] : styles[1];
+      return(<span style={style} onMouseOver={this.handleOver} onMouseOut={this.handleOver} id={`user_${this.props.data.id}`} className="user">{this.props.data.name}</span>)
+    }
+  }
+
+  const List = (props) => {
+
+    let list = users;
+
+    if(props.shuffle){
+      list = users.sort(() => Math.random() - 0.5);
+    }
+
+    return(
+      <ul>
+        {
+          list.map((user,k) => <li key={k}><User data={user}/></li>)
+        }
+      </ul>
+    )
+  }
+
+  const Button = (props) => {
+    return(<button onClick={props.action}>{props.name}</button>)
+  }
+
+  class App extends React.Component{
+
+    constructor(props){
+      super(props);
+      this.state = {shuffle:null}
+    }
+
+    shuffle = () => {
+      this.setState({
+        shuffle :Math.random()
+      })
+    }
+
+    render(){
+      return(
+        <div className="app">
+          <Button action={this.shuffle} name="shuffle"/>
+          <List shuffle={this.state.shuffle}/>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+  );
+
+</script>
+</body>
+
+</html>
