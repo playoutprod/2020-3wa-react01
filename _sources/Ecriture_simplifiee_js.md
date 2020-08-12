@@ -113,3 +113,12 @@ const [name] = this.props;
 
 ```
 name = "hello"
+
+## concatenation
+
+```
+let myVar = 5;
+
+"la variable a une valeur de "+var;
+`la variable a une valeur de ${myVar}`;
+```
