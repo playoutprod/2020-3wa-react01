@@ -1,0 +1,29 @@
+$bgcolor-over : #c3e6cb;
+$bgcolor-out : #b8daff;
+$color-over : #155724;
+$color-out : #004085;
+
+:export{
+  theme : {
+    bgcolorOver : $bgcolor-over;
+    bgcolorOut : $bgcolor-out;
+    colorOver : $color-over;
+    colorOut : $color-out;
+  };
+  themeInvert : {
+    bgcolorOver : $bgcolor-out;
+    bgcolorOut : $bgcolor-over;
+    colorOver : $color-out;
+    colorOut : $color-over;
+  }
+
+}
+
+li.title__over{
+  color: $color-over;
+  background-color: $bgcolor-over;
+}
+li.title__out, li.title__default{
+  color: $color-out;
+  background-color: $bgcolor-out;
+}

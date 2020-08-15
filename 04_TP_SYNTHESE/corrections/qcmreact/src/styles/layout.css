@@ -1,0 +1,12 @@
+.layout{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.layout *:first-child{
+  flex:1;
+}
+.layout *:last-child{
+  flex:3;
+}

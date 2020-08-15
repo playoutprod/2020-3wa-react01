@@ -1,0 +1,80 @@
+    {
+        "qcm": [
+            {
+                "id": 1,
+                "title": "Framework React",
+                "question": "React est-il un framework ?",
+                "c1": "oui",
+                "c2": "non",
+                "response": "c2",
+                "status": "open",
+                "success": false,
+                "choice": null,
+                "badge": "medium",
+                "genre_id": 1
+            },
+            {
+                "id": 2,
+                "title": "Commande npm",
+                "question": "Que fait la commande suivante ?",
+                "commandes": "npm start",
+                "c1": "lance le build pour la production",
+                "c2": "lance le serveur de test avec un reload JIT",
+                "response": "c2",
+                "status": "open",
+                "success": false,
+                "choice": null,
+                "badge": "hard",
+                "genre_id": 1
+            },
+            {
+                "id": 3,
+                "title": "Angular Structure",
+                "question": "Angular est-il un framework ?",
+                "c1": "oui",
+                "c2": "non",
+                "response": "c1",
+                "status": "open",
+                "success": false,
+                "choice": null,
+                "badge": "medium",
+                "genre_id": 1
+            },
+            {
+                "id": 4,
+                "title": "Symfony structure",
+                "question": "Symfony est il un framework ?",
+                "c1": "oui",
+                "c2": "non",
+                "response": "c1",
+                "status": "open",
+                "success": false,
+                "choice": null,
+                "badge": "hard",
+                "genre_id": 2
+            },
+            {
+                "id": 5,
+                "title": "PHP langage",
+                "question": "PHP est il un langage orienté objet",
+                "c1": "oui",
+                "c2": "non",
+                "response": "c2",
+                "status": "open",
+                "success": false,
+                "choice": null,
+                "badge": "easy",
+                "genre_id": 2
+            }
+        ],
+        "genres": [
+            {
+                "id": 1,
+                "name": "Dev Front"
+            },
+            {
+                "id": 2,
+                "name": "Dev Back"
+            }
+        ]
+    }

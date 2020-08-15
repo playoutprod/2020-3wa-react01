@@ -1,0 +1,14 @@
+.question {
+  position: relative;
+  padding: 0 5%;
+}
+.question .alert{
+  display: block;
+}
+.question code {
+  display: block;
+  margin: 1em auto;
+}
+.question input[type="submit"]{
+  margin-top: 1em;
+}
